@@ -1,1 +1,1 @@
-Crée une page vide avec un format html standard
+J'aimerai une page web très jolie et moderne avec une animation colorée
