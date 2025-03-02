@@ -1,155 +1,147 @@
-// Singleton pattern for main services and components
+// Singleton pattern for services and components
 class Singleton {
-  private static instance;
+  constructor() {
+    this.instance = null;
+  }
 
-  public static getInstance() {
-    if (!Singleton.instance) {
-      Singleton.instance = new this();
+  getInstance() {
+    if (!this.instance) {
+      this.instance = new this();
     }
-    return Singleton.instance;
+    return this.instance;
   }
-
-  protected constructor() {}
 }
 
+// VideoPlayer class
 class VideoPlayer extends Singleton {
-  // Main video player component
-  private videoElement;
-  private statusDisplay;
-  private qualitySelector;
-  private debugPanel;
-
-  public init(videoElement, statusDisplay, qualitySelector, debugPanel) {
-    this.videoElement = videoElement;
-    this.statusDisplay = statusDisplay;
-    this.qualitySelector = qualitySelector;
-    this.debugPanel = debugPanel;
+  constructor() {
+    super();
+    this.videoElement = document.getElementById('video');
+    this.qualitySelector = QualitySelector.getInstance();
+    this.statusDisplay = StatusDisplay.getInstance();
   }
 
-  public play() {
-    // Play the video
+  play(videoUrl) {
+    // Load video using MediaLoader service
+    const mediaLoader = MediaLoader.getInstance();
+    mediaLoader.load(videoUrl)
+      .then((media) => {
+        // Play video with detected quality
+        this.videoElement.srcObject = media;
+        this.videoElement.play();
+      })
+      .catch((error) => {
+        this.statusDisplay.displayError(error);
+      });
   }
 
-  public pause() {
-    // Pause the video
-  }
-}
-
-class StatusDisplay extends Singleton {
-  // Display status and instructions
-  private textElement;
-
-  public init(textElement) {
-    this.textElement = textElement;
-  }
-
-  public updateStatus(statusText) {
-    this.textElement.innerText = statusText;
+  selectQuality() {
+    this.qualitySelector.show();
   }
 }
 
+// QualitySelector component
 class QualitySelector extends Singleton {
-  // Interface for selecting video quality
-  private dropdownElement;
-
-  public init(dropdownElement) {
-    this.dropdownElement = dropdownElement;
+  constructor() {
+    super();
+    this.qualities = [];
   }
 
-  public updateOptions(qualityOptions) {
-    // Update the dropdown options with available qualities
-  }
-}
-
-class DebugPanel extends Singleton {
-  // Debug panel displaying technical metrics
-  private logElement;
-
-  public init(logElement) {
-    this.logElement = logElement;
+  show() {
+    // Display quality selector UI here
   }
 
-  public updateLog(logData) {
-    // Update the debug panel with log data
+  getQualities(videoUrl) {
+    // Load qualities for video using HLSService or ProxyService
+    const hlsService = HLSService.getInstance();
+    return hlsService.getQualities(videoUrl);
   }
 }
 
-// Media loader service
-class MediaLoader {
-  public loadMedia(mediaUrl, callback) {
-    // Load the media using the appropriate service (HLS.js for HLS and MPEG-TS)
+// StatusDisplay component
+class StatusDisplay extends Singleton {
+  constructor() {
+    super();
+    this.statusText = document.getElementById('status');
+  }
+
+  displayStatus(status) {
+    this.statusText.textContent = status;
+  }
+
+  displayError(error) {
+    this.displayStatus(`Error: ${error.message}`);
   }
 }
 
-// HLS service
+// MediaLoader service
+class MediaLoader extends Singleton {
+  load(videoUrl) {
+    // Load video using HLS.js for HLS and MPEG-TS formats, or MP4 format otherwise
+    if (videoUrl.endsWith('.ts') || videoUrl.endsWith('.m3u8')) {
+      return hlsjs.load(videoUrl);
+    } else {
+      return fetch(videoUrl).then((response) => response.blob());
+    }
+  }
+}
+
+// HLSService service
 class HLSService extends Singleton {
-  private hlsjs;
-
-  public init(hlsjs) {
-    this.hlsjs = hlsjs;
-  }
-
-  public playHLS(url, callback) {
-    // Play the HLS stream using HLS.js
+  getQualities(videoUrl) {
+    // Load qualities for HLS video using HLS.js
+    const hls = hlsjs.load(videoUrl);
+    return hls.getAvailableQualityLevels();
   }
 }
 
-// Proxy service for CORS and fallbacks
+// ProxyService service
 class ProxyService extends Singleton {
-  public setProxyUrl(proxyUrl) {
-    // Set the proxy URL for CORS or fallbacks
-  }
-
-  public makeRequest(request) {
-    // Make a request to the proxied URL
-  }
-}
-
-// Logger utility
-class Logger {
-  private logElement;
-
-  public init(logElement) {
-    this.logElement = logElement;
-  }
-
-  public log(message) {
-    // Log the message in the log element
+  getProxyUrl(videoUrl) {
+    // Determine if CORS is allowed, and use a proxy if necessary
+    if (/* check CORS */) {
+      return `http://localhost:8080/proxy?url=${videoUrl}`;
+    } else {
+      return videoUrl;
+    }
   }
 }
 
-// Url helper utility
-class UrlHelper {
-  public makeAbsoluteUrl(url) {
-    // Make an absolute URL from a relative one
+// Logger service
+class Logger extends Singleton {
+  log(message) {
+    console.log(message);
   }
 }
 
-// Initialize the application
-function init() {
-  const videoPlayer = new VideoPlayer();
-  const statusDisplay = new StatusDisplay();
-  const qualitySelector = new QualitySelector();
-  const debugPanel = new DebugPanel();
-  const mediaLoader = new MediaLoader();
-  const hlsService = new HLSService(HLSJS);
-  const proxyService = new ProxyService();
-  const logger = new Logger();
-  const urlHelper = new UrlHelper();
+// UrlHelper utility
+function getUrlParameter(name) {
+  const url = window.location.href;
+  const params = url.split('?')[1].split('&');
+  for (const param of params) {
+    if (param.startsWith(`${name}=`)) {
+      return param.substring(param.indexOf('=') + 1);
+    }
+  }
+  return null;
+}
 
-  // Initialize the UI components
-  videoPlayer.init(videoElement, statusDisplay, qualitySelector, debugPanel);
-  statusDisplay.init(textElement);
-  qualitySelector.init(dropdownElement);
-  debugPanel.init(logElement);
+// Initialize application
+window.onload = () => {
+  const videoPlayer = VideoPlayer.getInstance();
+  const qualitySelector = QualitySelector.getInstance();
+  const statusDisplay = StatusDisplay.getInstance();
 
-  // Set up event listeners and handlers
-  videoPlayer.addEventListener("play", () => {
-    // Play the video when the play button is clicked
+  // Set up event listeners for UI components
+
+  // Load video when user selects a media source
+  document.getElementById('media-source').addEventListener('change', (event) => {
+    const videoUrl = event.target.value;
+    videoPlayer.play(videoUrl);
   });
 
-  // Initialize the media loader and HLS service
-  mediaLoader.loadMedia(mediaUrl, () => {
-    // Load the media using the appropriate service (HLS.js for HLS and MPEG-TS)
+  // Update quality selector when video qualities change
+  videoPlayer.on('qualityChange', (qualities) => {
+    qualitySelector.setQualities(qualities);
   });
-}
+};
