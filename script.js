@@ -1,13 +1,12 @@
 // Singleton pattern for services and components
 class Singleton {
-  constructor() {
-    this.instance = null;
-  }
-  getInstance() {
-    if (!this.instance) {
-      this.instance = new this();
+  static #instance;
+  constructor() {}
+  static getInstance() {
+    if (!Singleton.#instance) {
+      Singleton.#instance = new this();
     }
-    return this.instance;
+    return Singleton.#instance;
   }
 }
 
@@ -15,15 +14,14 @@ class Singleton {
 class VideoPlayer extends Singleton {
   constructor() {
     super();
+    this.mediaLoader = MediaLoader.getInstance();
     this.statusDisplay = StatusDisplay.getInstance();
     this.qualitySelector = QualitySelector.getInstance();
     this.debugPanel = DebugPanel.getInstance();
-    this.mediaLoader = MediaLoader.getInstance();
-    this.hlsService = HLSService.getInstance();
-    this.proxyService = ProxyService.getInstance();
   }
-  playVideo() {
-    // Play video logic here
+
+  playVideo(videoUrl) {
+    this.mediaLoader.loadMedia(videoUrl);
   }
 }
 
@@ -31,11 +29,10 @@ class VideoPlayer extends Singleton {
 class StatusDisplay extends Singleton {
   constructor() {
     super();
-    this.videoPlayer = VideoPlayer.getInstance();
-    this.updateStatus();
   }
-  updateStatus() {
-    // Update status display with current video status
+
+  displayStatus(statusMessage) {
+    // Display status message in UI
   }
 }
 
@@ -43,11 +40,10 @@ class StatusDisplay extends Singleton {
 class QualitySelector extends Singleton {
   constructor() {
     super();
-    this.videoPlayer = VideoPlayer.getInstance();
-    this.updateQualityOptions();
   }
-  updateQualityOptions() {
-    // Update quality options based on available qualities
+
+  selectQuality(videoUrl, quality) {
+    // Update video player with selected quality
   }
 }
 
@@ -55,11 +51,10 @@ class QualitySelector extends Singleton {
 class DebugPanel extends Singleton {
   constructor() {
     super();
-    this.videoPlayer = VideoPlayer.getInstance();
-    this.updateDebugInfo();
   }
-  updateDebugInfo() {
-    // Update debug panel with current video metrics
+
+  displayDebugInfo(debugData) {
+    // Display debug information in UI
   }
 }
 
@@ -67,11 +62,10 @@ class DebugPanel extends Singleton {
 class MediaLoader extends Singleton {
   constructor() {
     super();
-    this.videoPlayer = VideoPlayer.getInstance();
-    this.loadMedia();
   }
-  loadMedia() {
-    // Load media logic here
+
+  loadMedia(videoUrl) {
+    // Load video using HLS.js for HLS and MPEG-TS, or other media loaders as needed
   }
 }
 
@@ -79,11 +73,11 @@ class MediaLoader extends Singleton {
 class HLSService extends Singleton {
   constructor() {
     super();
-    this.mediaLoader = MediaLoader.getInstance();
-    this.hlsjs = require('hls.js');
+    this.hlsJs = require('hls.js');
   }
-  playHLSVideo() {
-    // Play HLS video logic here
+
+  playHLS(videoUrl) {
+    // Play HLS video using hls.js
   }
 }
 
@@ -91,35 +85,41 @@ class HLSService extends Singleton {
 class ProxyService extends Singleton {
   constructor() {
     super();
-    this.mediaLoader = MediaLoader.getInstance();
-    this.proxyUrl = 'https://example.com/proxy';
   }
-  getProxyUrl() {
-    return this.proxyUrl;
+
+  getProxyUrl(videoUrl) {
+    // Get proxy URL for CORS or local proxy
   }
 }
 
-// Logger service
-class Logger {
+// Logger class
+class Logger extends Singleton {
+  constructor() {
+    super();
+  }
+
   log(message) {
     console.log(message);
   }
 }
 
-// UrlHelper utility class
-class UrlHelper {
-  static buildUrl(url, params) {
-    // Build URL logic here
+// UrlHelper class
+class UrlHelper extends Singleton {
+  constructor() {
+    super();
+  }
+
+  getBaseUrl(videoUrl) {
+    // Get base URL from video URL
   }
 }
 
-// Initialize application
-window.onload = function() {
-  const videoPlayer = VideoPlayer.getInstance();
-  const statusDisplay = StatusDisplay.getInstance();
-  const qualitySelector = QualitySelector.getInstance();
-  const debugPanel = DebugPanel.getInstance();
-  // Initialize other components and services as needed
-};
+// Initialize app
+const videoPlayer = VideoPlayer.getInstance();
+const statusDisplay = StatusDisplay.getInstance();
+const qualitySelector = QualitySelector.getInstance();
+const debugPanel = DebugPanel.getInstance();
+
+// Event listeners and logic go here...
 
 export { VideoPlayer, StatusDisplay, QualitySelector, DebugPanel, MediaLoader, HLSService, ProxyService, Logger, UrlHelper };
