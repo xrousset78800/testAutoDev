@@ -1,164 +1,155 @@
-Here is the `script.js` file:
-```
-// Singleton pattern for services and components
+// Singleton pattern for main services and components
 class Singleton {
-  constructor() {
-    this.instance = null;
-  }
-  getInstance() {
-    if (!this.instance) {
-      this.instance = new this.constructor();
+  private static instance;
+
+  public static getInstance() {
+    if (!Singleton.instance) {
+      Singleton.instance = new this();
     }
-    return this.instance;
+    return Singleton.instance;
   }
+
+  protected constructor() {}
 }
 
-// VideoPlayer class
 class VideoPlayer extends Singleton {
-  constructor() {
-    super();
-    this.mediaSource = null;
-    this.qualitySelector = null;
-    this.statusDisplay = null;
-    this.debugPanel = null;
-  }
+  // Main video player component
+  private videoElement;
+  private statusDisplay;
+  private qualitySelector;
+  private debugPanel;
 
-  setMediaSource(mediaSource) {
-    this.mediaSource = mediaSource;
-  }
-
-  setQualitySelector(qualitySelector) {
-    this.qualitySelector = qualitySelector;
-  }
-
-  setStatusDisplay(statusDisplay) {
+  public init(videoElement, statusDisplay, qualitySelector, debugPanel) {
+    this.videoElement = videoElement;
     this.statusDisplay = statusDisplay;
-  }
-
-  setDebugPanel(debugPanel) {
+    this.qualitySelector = qualitySelector;
     this.debugPanel = debugPanel;
   }
+
+  public play() {
+    // Play the video
+  }
+
+  public pause() {
+    // Pause the video
+  }
 }
 
-// StatusDisplay component
 class StatusDisplay extends Singleton {
-  constructor() {
-    super();
-    this.statusText = '';
+  // Display status and instructions
+  private textElement;
+
+  public init(textElement) {
+    this.textElement = textElement;
   }
 
-  updateStatusText(text) {
-    this.statusText = text;
-  }
-
-  render() {
-    // Render status display UI
+  public updateStatus(statusText) {
+    this.textElement.innerText = statusText;
   }
 }
 
-// QualitySelector component
 class QualitySelector extends Singleton {
-  constructor() {
-    super();
-    this.qualities = [];
+  // Interface for selecting video quality
+  private dropdownElement;
+
+  public init(dropdownElement) {
+    this.dropdownElement = dropdownElement;
   }
 
-  addQuality(quality) {
-    this.qualities.push(quality);
-  }
-
-  render() {
-    // Render quality selector UI
+  public updateOptions(qualityOptions) {
+    // Update the dropdown options with available qualities
   }
 }
 
-// DebugPanel component
 class DebugPanel extends Singleton {
-  constructor() {
-    super();
-    this.metrics = {};
+  // Debug panel displaying technical metrics
+  private logElement;
+
+  public init(logElement) {
+    this.logElement = logElement;
   }
 
-  updateMetrics(metrics) {
-    this.metrics = metrics;
-  }
-
-  render() {
-    // Render debug panel UI
+  public updateLog(logData) {
+    // Update the debug panel with log data
   }
 }
 
-// MediaLoader class
-class MediaLoader extends Singleton {
-  constructor() {
-    super();
-  }
-
-  loadMedia(mediaSource) {
-    // Load media using appropriate service (HLSService or ProxyService)
+// Media loader service
+class MediaLoader {
+  public loadMedia(mediaUrl, callback) {
+    // Load the media using the appropriate service (HLS.js for HLS and MPEG-TS)
   }
 }
 
-// HLSService class
+// HLS service
 class HLSService extends Singleton {
-  constructor() {
-    super();
+  private hlsjs;
+
+  public init(hlsjs) {
+    this.hlsjs = hlsjs;
   }
 
-  loadHLSMedia(mediaSource) {
-    // Load HLS media using HLS.js library
+  public playHLS(url, callback) {
+    // Play the HLS stream using HLS.js
   }
 }
 
-// ProxyService class
+// Proxy service for CORS and fallbacks
 class ProxyService extends Singleton {
-  constructor() {
-    super();
+  public setProxyUrl(proxyUrl) {
+    // Set the proxy URL for CORS or fallbacks
   }
 
-  loadProxyMedia(mediaSource) {
-    // Load media via proxy (local or CORS)
-  }
-}
-
-// Logger service
-class Logger extends Singleton {
-  constructor() {
-    super();
-  }
-
-  log(message) {
-    // Log message to console or file
+  public makeRequest(request) {
+    // Make a request to the proxied URL
   }
 }
 
-// UrlHelper utility
-function UrlHelper() {}
+// Logger utility
+class Logger {
+  private logElement;
 
-UrlHelper.prototype.parseUrl = function(url) {
-  // Parse URL and extract relevant information
-};
+  public init(logElement) {
+    this.logElement = logElement;
+  }
 
-UrlHelper.prototype.buildUrl = function(baseUrl, path) {
-  // Build URL from base URL and path
-};
+  public log(message) {
+    // Log the message in the log element
+  }
+}
 
-// Initialize application services and components
-const videoPlayer = new VideoPlayer();
-const statusDisplay = new StatusDisplay();
-const qualitySelector = new QualitySelector();
-const debugPanel = new DebugPanel();
-const mediaLoader = new MediaLoader();
-const hlSService = new HLSService();
-const proxyService = new ProxyService();
-const logger = new Logger();
+// Url helper utility
+class UrlHelper {
+  public makeAbsoluteUrl(url) {
+    // Make an absolute URL from a relative one
+  }
+}
 
-// Set up event listeners and application logic
-videoPlayer.setMediaSource(mediaSource);
-videoPlayer.setQualitySelector(qualitySelector);
-videoPlayer.setStatusDisplay(statusDisplay);
-videoPlayer.setDebugPanel(debugPanel);
+// Initialize the application
+function init() {
+  const videoPlayer = new VideoPlayer();
+  const statusDisplay = new StatusDisplay();
+  const qualitySelector = new QualitySelector();
+  const debugPanel = new DebugPanel();
+  const mediaLoader = new MediaLoader();
+  const hlsService = new HLSService(HLSJS);
+  const proxyService = new ProxyService();
+  const logger = new Logger();
+  const urlHelper = new UrlHelper();
 
-mediaLoader.loadMedia(mediaSource);
-```
-This script sets up the basic structure of the `VideoPlayer` class, along with its associated components (`StatusDisplay`, `QualitySelector`, and `DebugPanel`). It also defines the `MediaLoader` class, which will be responsible for loading media using either the `HLSService` or `ProxyService`. Additionally, it initializes the `Logger` service and sets up some basic event listeners and application logic.
+  // Initialize the UI components
+  videoPlayer.init(videoElement, statusDisplay, qualitySelector, debugPanel);
+  statusDisplay.init(textElement);
+  qualitySelector.init(dropdownElement);
+  debugPanel.init(logElement);
+
+  // Set up event listeners and handlers
+  videoPlayer.addEventListener("play", () => {
+    // Play the video when the play button is clicked
+  });
+
+  // Initialize the media loader and HLS service
+  mediaLoader.loadMedia(mediaUrl, () => {
+    // Load the media using the appropriate service (HLS.js for HLS and MPEG-TS)
+  });
+}
