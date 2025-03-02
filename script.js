@@ -1,125 +1,61 @@
-// Singleton pattern for services and components
-class Singleton {
-  static #instance;
-  constructor() {}
-  static getInstance() {
-    if (!Singleton.#instance) {
-      Singleton.#instance = new this();
-    }
-    return Singleton.#instance;
-  }
-}
+// video-player.js
+import { VideoPlayer } from './video-player';
+import { StatusDisplay } from './status-display';
+import { QualitySelector } from './quality-selector';
+import { DebugPanel } from './debug-panel';
+import { MediaLoader } from './media-loader';
+import { HLSService } from './hlsservice';
+import { ProxyService } from './proxy-service';
 
-// VideoPlayer class
-class VideoPlayer extends Singleton {
+class App {
   constructor() {
-    super();
-    this.mediaLoader = MediaLoader.getInstance();
-    this.statusDisplay = StatusDisplay.getInstance();
-    this.qualitySelector = QualitySelector.getInstance();
-    this.debugPanel = DebugPanel.getInstance();
+    this.videoPlayer = new VideoPlayer();
+    this.statusDisplay = new StatusDisplay();
+    this.qualitySelector = new QualitySelector();
+    this.debugPanel = new DebugPanel();
+    this.mediaLoader = new MediaLoader();
+    this.hlsservice = new HLSService();
+    this.proxyService = new ProxyService();
+
+    this.init();
   }
 
-  playVideo(videoUrl) {
-    this.mediaLoader.loadMedia(videoUrl);
-  }
-}
+  init() {
+    // initialize video player
+    this.videoPlayer.setMediaLoader(this.mediaLoader);
+    this.videoPlayer.setStatusDisplay(this.statusDisplay);
+    this.videoPlayer.setQualitySelector(this.qualitySelector);
 
-// StatusDisplay class
-class StatusDisplay extends Singleton {
-  constructor() {
-    super();
-  }
+    // initialize status display
+    this.statusDisplay.setStatusUpdater(() => {
+      // update status text here
+    });
 
-  displayStatus(statusMessage) {
-    // Display status message in UI
-  }
-}
+    // initialize quality selector
+    this.qualitySelector.setQualityChangedListener(() => {
+      // update video player with new quality settings
+    });
 
-// QualitySelector class
-class QualitySelector extends Singleton {
-  constructor() {
-    super();
-  }
+    // initialize debug panel
+    this.debugPanel.setDebugInfoUpdater(() => {
+      // update debug panel with new info
+    });
 
-  selectQuality(videoUrl, quality) {
-    // Update video player with selected quality
-  }
-}
+    // initialize media loader
+    this.mediaLoader.setMediaLoadedCallback((media) => {
+      // handle media loaded event here
+    });
 
-// DebugPanel class
-class DebugPanel extends Singleton {
-  constructor() {
-    super();
-  }
+    // initialize HLSService
+    this.hlsservice.setHLSErrorHandler((error) => {
+      // handle HLS error here
+    });
 
-  displayDebugInfo(debugData) {
-    // Display debug information in UI
-  }
-}
-
-// MediaLoader class
-class MediaLoader extends Singleton {
-  constructor() {
-    super();
-  }
-
-  loadMedia(videoUrl) {
-    // Load video using HLS.js for HLS and MPEG-TS, or other media loaders as needed
+    // initialize ProxyService
+    this.proxyService.setProxyErrorCallback((error) => {
+      // handle proxy error here
+    });
   }
 }
 
-// HLSService class
-class HLSService extends Singleton {
-  constructor() {
-    super();
-    this.hlsJs = require('hls.js');
-  }
-
-  playHLS(videoUrl) {
-    // Play HLS video using hls.js
-  }
-}
-
-// ProxyService class
-class ProxyService extends Singleton {
-  constructor() {
-    super();
-  }
-
-  getProxyUrl(videoUrl) {
-    // Get proxy URL for CORS or local proxy
-  }
-}
-
-// Logger class
-class Logger extends Singleton {
-  constructor() {
-    super();
-  }
-
-  log(message) {
-    console.log(message);
-  }
-}
-
-// UrlHelper class
-class UrlHelper extends Singleton {
-  constructor() {
-    super();
-  }
-
-  getBaseUrl(videoUrl) {
-    // Get base URL from video URL
-  }
-}
-
-// Initialize app
-const videoPlayer = VideoPlayer.getInstance();
-const statusDisplay = StatusDisplay.getInstance();
-const qualitySelector = QualitySelector.getInstance();
-const debugPanel = DebugPanel.getInstance();
-
-// Event listeners and logic go here...
-
-export { VideoPlayer, StatusDisplay, QualitySelector, DebugPanel, MediaLoader, HLSService, ProxyService, Logger, UrlHelper };
+const app = new App();
