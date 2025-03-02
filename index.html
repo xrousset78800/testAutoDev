@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecteur Vidéo Avancé</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav id="menu">
+        <ul>
+            <li><a href="#" data-media-type="mp4">MP4</a></li>
+            <li><a href="#" data-media-type="hls">HLS</a></li>
+            <li><a href="#" data-media-type="mpeg-ts">MPEG-TS</a></li>
+        </ul>
+    </nav>
+    <main id="player-container">
+        <video id="video-player" width="640" height="360" controls>
+            <source id="mp4-source" src="" type="video/mp4">
+            <source id="hls-source" src="" type="video/flux">
+            <p>Le navigateur ne prend pas en charge ce format de flux vidéo.</p>
+        </video>
+        <div id="status-display"></div>
+        <div id="quality-selector"></div>
+        <button id="debug-panel-button">Ouvrir le panneau de débogage</button>
+        <div id="debug-panel" style="display: none;">
+            <p id="debug-message"></p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
