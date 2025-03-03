@@ -1,46 +1,23 @@
-// hls.min.js (from https://cdn.jsdelivr.net/npm/hls.js@0.12.5/dist/hls.min.js)
-import { getMediaProperties } from 'hlsjs';
+// hls.min.js (from https://github.com/video-dev/hls.js)
 
-class HLS {
-  constructor() {}
+(function () {
+    'use strict';
 
-  loadSource(url) {
-    return new Promise((resolve, reject) => {
-      const hls = this;
-      const mediaConfig = {};
+    var Hls = function () {};
 
-      // Set up the stream
-      mediaConfig.srcObject = {
-        type: 'video',
-        url,
-      };
+    // ... many methods and properties ...
 
-      getMediaProperties(mediaConfig).then((properties) => {
-        resolve(properties);
-      }).catch((error) => {
-        reject(error);
-      });
-    });
-  }
+    Hls.prototype.attachMediaContainer = function (mediaElement) {
+        this.mediaElements.push(mediaElement);
+    };
 
-  getMediaProperties(url) {
-    return new Promise((resolve, reject) => {
-      const hls = this;
-      const mediaConfig = {};
+    Hls.prototype.detachMediaContainer = function (mediaElement) {
+        var index = this.mediaElements.indexOf(mediaElement);
+        if (~index) {
+            this.mediaElements.splice(index, 1);
+        }
+    };
 
-      // Set up the stream
-      mediaConfig.srcObject = {
-        type: 'video',
-        url,
-      };
+    // ... many other methods and properties ...
 
-      getMediaProperties(mediaConfig).then((properties) => {
-        resolve(properties);
-      }).catch((error) => {
-        reject(error);
-      });
-    });
-  }
-}
-
-export default HLS;
+})();
