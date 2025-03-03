@@ -1,87 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lecteur Vidéo Avancé</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        
-        .video-player {
-            width: 80%;
-            height: 60vh;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-        }
-        
-        .video-player video {
-            width: 100%;
-            height: 100%;
-        }
-        
-        .quality-selector {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        
-        .quality-selector ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .quality-selector li {
-            display: inline-block;
-            margin-right: 10px;
-        }
-        
-        .debug-panel {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 12px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        
-        .debug-panel h2 {
-            margin-top: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="video-player">
-            <video id="video" controls></video>
-        </div>
-        <div class="quality-selector">
+    <header>
+        <nav>
             <ul>
-                <li>1080p</li>
-                <li>720p</li>
-                <li>480p</li>
-                <li>360p</li>
+                <li><a href="#" id="play-button">Jouer</a></li>
+                <li><a href="#" id="pause-button">Pausé</a></li>
+                <li><a href="#" id="quality-selector">Qualité</a></li>
+                <li><a href="#" id="debug-panel">Débogage</a></li>
             </ul>
-        </div>
-        <div class="debug-panel" id="debug-panel"></div>
-    </div>
-    
-    <script>
-        // Code to be written
-    </script>
+        </nav>
+    </header>
+    <main>
+        <video id="video-player" width="100%" height="100%" controls>
+            <!-- Votre code de chargement vidéo ici -->
+        </video>
+        <section id="status-display"></section>
+        <aside id="debug-panel-content">
+            <h2>Débogage</h2>
+            <ul>
+                <li><span>Resolution:</span> <span id="resolution">Unknown</span></li>
+                <li><span>Bandwidth:</span> <span id="bandwidth">Unknown</span></li>
+                <li><span>Latency:</span> <span id="latency">Unknown</span></li>
+            </ul>
+        </aside>
+    </main>
+    <script src="script.js"></script>
 </body>
 </html>
