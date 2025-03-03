@@ -1,27 +1,87 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lecteur Vidéo Avancé</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .video-player {
+            width: 80%;
+            height: 60vh;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .video-player video {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .quality-selector {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .quality-selector ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .quality-selector li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        .debug-panel {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 12px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .debug-panel h2 {
+            margin-top: 0;
+        }
+    </style>
 </head>
 <body>
-    <!-- Video Player -->
-    <div id="video-player"></div>
-
-    <!-- Status Display -->
-    <div id="status-display"></div>
-
-    <!-- Quality Selector -->
-    <select id="quality-selector"></select>
-
-    <!-- Debug Panel -->
-    <details id="debug-panel">
-        <summary>Debug</summary>
-        <p id="debug-info"></p>
-    </details>
-
-    <script src="main.js"></script>
+    <div class="container">
+        <div class="video-player">
+            <video id="video" controls></video>
+        </div>
+        <div class="quality-selector">
+            <ul>
+                <li>1080p</li>
+                <li>720p</li>
+                <li>480p</li>
+                <li>360p</li>
+            </ul>
+        </div>
+        <div class="debug-panel" id="debug-panel"></div>
+    </div>
+    
+    <script>
+        // Code to be written
+    </script>
 </body>
 </html>
