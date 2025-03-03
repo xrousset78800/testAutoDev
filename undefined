@@ -1,82 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vidéo Player</title>
-    <style>
-        /* Add some basic styles to make the UI more presentable */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        
-        .player-container {
-            width: 80%;
-            max-width: 800px;
-            margin: 40px auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .video-player {
-            height: 100vh;
-            width: 100vw;
-            background-color: #333;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .video-controls {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 50px;
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-            background-color: #444;
-        }
-        
-        .quality-selector {
-            margin-top: 20px;
-            font-size: 16px;
-            color: #fff;
-        }
-        
-        .debug-panel {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 200px;
-            height: 100vh;
-            padding: 10px;
-            background-color: #333;
-        }
-    </style>
+    <title>Lecteur Vidéo Avancé</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="player-container">
-        <!-- Video Player -->
-        <video id="video-player" class="video-player" controls>
-            <source src="" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        
-        <!-- Quality Selector -->
-        <select id="quality-selector" class="quality-selector">
-            <!-- Populate quality options here -->
-        </select>
-        
-        <!-- Debug Panel -->
-        <div id="debug-panel" class="debug-panel">
-            <!-- Debug panel contents will go here -->
-        </div>
-    </div>
-    
-    <!-- JavaScript file -->
-    <script src="player.js"></script>
+    <!-- Video Player -->
+    <div id="video-player"></div>
+
+    <!-- Status Display -->
+    <div id="status-display"></div>
+
+    <!-- Quality Selector -->
+    <select id="quality-selector"></select>
+
+    <!-- Debug Panel -->
+    <details id="debug-panel">
+        <summary>Debug</summary>
+        <p id="debug-info"></p>
+    </details>
+
+    <script src="main.js"></script>
 </body>
 </html>
