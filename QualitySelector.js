@@ -1,41 +1,51 @@
 // QualitySelector.js
+
 class QualitySelector {
-  constructor(videoPlayer) {
+  constructor(videoPlayer, qualityOptions) {
     this.videoPlayer = videoPlayer;
-    this.qualityOptions = [];
-    this.currentQuality = null;
+    this.qualityOptions = qualityOptions;
 
-    // Initialize quality options based on available qualities from MediaLoader
-    const mediaLoader = new MediaLoader();
-    mediaLoader.getQualities().then((qualities) => {
-      this.qualityOptions = qualities.map((quality) => ({ label: quality.label, value: quality.value }));
+    // Initialize quality selector state
+    this.currentQualityLevel = null;
+
+    // Render quality options as radio buttons
+    const qualityRadioContainer = document.getElementById('quality-radio-container');
+    Object.keys(qualityOptions).forEach((key) => {
+      const radioButton = document.createElement('input');
+      radioButton.type = 'radio';
+      radioButton.name = 'quality';
+      radioButton.value = key;
+      radioButton.checked = false;
+
+      const labelElement = document.createElement('label');
+      labelElement.textContent = `${key} (${qualityOptions[key].bitrate} kbps)`;
+
+      qualityRadioContainer.appendChild(radioButton);
+      qualityRadioContainer.appendChild(labelElement);
+
+      // Add event listener for radio button selection
+      radioButton.addEventListener('change', (event) => {
+        this.videoPlayer.setQuality(event.target.value);
+      });
     });
+
+    // Initialize current quality level from video player state if available
+    if (this.videoPlayer.getCurrentQualityLevel()) {
+      const selectedRadioButton = document.querySelector(`input[name='quality'][value='${this.videoPlayer.getCurrentQualityLevel()}']`);
+      if (selectedRadioButton) {
+        selectedRadioButton.checked = true;
+        this.currentQualityLevel = this.videoPlayer.getCurrentQualityLevel();
+      }
+    }
   }
 
-  updateQualitySelect() {
-    // Update the quality select element with available options
-    const qualitySelectElement = document.getElementById('quality-select');
-    qualitySelectElement.innerHTML = '';
-    this.qualityOptions.forEach((option) => {
-      const optionElement = document.createElement('option');
-      optionElement.textContent = option.label;
-      optionElement.value = option.value;
-      qualitySelectElement.appendChild(optionElement);
-    });
+  getCurrentQualityLevel() {
+    return this.currentQualityLevel;
   }
 
-  changeQuality(newQualityValue) {
-    // Update the current quality and video player settings
-    this.currentQuality = newQualityValue;
-    this.videoPlayer.setQuality(this.currentQuality);
-
-    // Notify other components of the quality update (e.g. DebugPanel)
-    const debugPanel = new DebugPanel();
-    debugPanel.updateVideoInfo();
-  }
-
-  getCurrentQuality() {
-    return this.currentQuality;
+  setQuality(qualityLevel) {
+    // Update video player state with new quality level
+    this.videoPlayer.setQuality(qualityLevel);
   }
 }
 
