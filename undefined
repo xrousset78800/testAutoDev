@@ -1,36 +1,109 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecteur Vidéo Avancé</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#" id="play-button">Jouer</a></li>
-                <li><a href="#" id="pause-button">Pausé</a></li>
-                <li><a href="#" id="quality-selector">Qualité</a></li>
-                <li><a href="#" id="debug-panel">Débogage</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <video id="video-player" width="100%" height="100%" controls>
-            <!-- Votre code de chargement vidéo ici -->
-        </video>
-        <section id="status-display"></section>
-        <aside id="debug-panel-content">
-            <h2>Débogage</h2>
-            <ul>
-                <li><span>Resolution:</span> <span id="resolution">Unknown</span></li>
-                <li><span>Bandwidth:</span> <span id="bandwidth">Unknown</span></li>
-                <li><span>Latency:</span> <span id="latency">Unknown</span></li>
-            </ul>
-        </aside>
-    </main>
-    <script src="script.js"></script>
-</body>
-</html>
+// Styles
+:root {
+  --primary-color: #333;
+  --secondary-color: #666;
+}
+
+/* Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--primary-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--secondary-color);
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+p {
+  margin-bottom: 20px;
+}
+
+/* Video Player Styles */
+.video-player {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.video-player iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Status Display Styles */
+.status-display {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--secondary-color);
+}
+
+.status-display span {
+  padding: 5px;
+  border-radius: 10px;
+  background-color: var(--primary-color);
+}
+
+/* Quality Selector Styles */
+.quality-selector {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--secondary-color);
+}
+
+.quality-selector ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.quality-selector li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+/* Debug Panel Styles */
+.debug-panel {
+  position: fixed;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--secondary-color);
+}
+
+.debug-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.debug-panel li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+// JavaScript
