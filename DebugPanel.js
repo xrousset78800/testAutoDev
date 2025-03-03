@@ -1,50 +1,38 @@
 // DebugPanel.js
+
 class DebugPanel {
-  constructor() {
-    this.container = document.getElementById('debug-panel');
-    this.videoPlayer = null;
-    this.statusDisplay = new StatusDisplay();
-  }
-
-  updateVideoInfo() {
-    const videoPlayer = this.videoPlayer;
-    if (!videoPlayer) return;
-
-    // Update debug panel with current video information
-    const resolutionLabel = `Resolution: ${videoPlayer.getResolution()}x${videoPlayer.getResolution()}`;
-    const bitrateLabel = `Bitrate: ${videoPlayer.getBitrate()} kbps`;
-    const latencyLabel = `Latency: ${videoPlayer.getLatency()} ms`;
-
-    this.container.innerHTML = '';
-    this.container.innerHTML += `
-      <h2>Video Information</h2>
-      <ul>
-        <li>${resolutionLabel}</li>
-        <li>${bitrateLabel}</li>
-        <li>${latencyLabel}</li>
-      </ul>
-    `;
-  }
-
-  updateStatusInfo() {
-    const statusDisplay = this.statusDisplay;
-    if (!statusDisplay) return;
-
-    // Update debug panel with current status information
-    const statusText = `${statusDisplay.getStatusMessage()} (${statusDisplay.getStatusCode()})`;
-    this.container.innerHTML += `
-      <h2>Status</h2>
-      <p>${statusText}</p>
-    `;
-  }
-
-  updatePanel(videoPlayer, statusDisplay) {
+  constructor(debugContainer, videoPlayer) {
+    this.debugContainer = debugContainer;
     this.videoPlayer = videoPlayer;
-    this.statusDisplay = statusDisplay;
 
-    // Update debug panel with current information
-    this.updateVideoInfo();
-    this.updateStatusInfo();
+    // Render debug panel elements
+    const resolutionLabel = document.createElement('label');
+    resolutionLabel.textContent = 'Resolution:';
+    const resolutionValueElement = document.createElement('span');
+
+    const bitrateLabel = document.createElement('label');
+    bitrateLabel.textContent = 'Bitrate:';
+    const bitrateValueElement = document.createElement('span');
+
+    const latencyLabel = document.createElement('label');
+    latencyLabel.textContent = 'Latency:';
+    const latencyValueElement = document.createElement('span');
+
+    this.debugContainer.appendChild(resolutionLabel);
+    this.debugContainer.appendChild(resolutionValueElement);
+
+    this.debugContainer.appendChild(bitrateLabel);
+    this.debugContainer.appendChild(bitrateValueElement);
+
+    this.debugContainer.appendChild(latencyLabel);
+    this.debugContainer.appendChild(latencyValueElement);
+
+    // Update debug panel values when video player state changes
+    this.videoPlayer.addEventListener('statechange', (event) => {
+      resolutionValueElement.textContent = event.detail.resolution;
+      bitrateValueElement.textContent = event.detail.bitrate + ' kbps';
+      latencyValueElement.textContent = event.detail.latency + ' ms';
+    });
   }
 }
 
