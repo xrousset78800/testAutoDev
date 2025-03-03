@@ -1,30 +1,38 @@
 // HLSService.js
+
 import HLS from 'hls.js';
+import { Logger } from '../services/Logger';
 
 class HLSService {
-  constructor() {}
+  constructor(videoPlayer, proxyService) {
+    this.videoPlayer = videoPlayer;
+    this.proxyService = proxyService;
+    this.logger = new Logger('HLSService');
+  }
 
-  loadHLS(mediaUrl, quality) {
-    const hls = new HLS();
-    return hls.loadSource(mediaUrl).then((source) => {
-      // Set the quality of the stream based on the user selection
-      source.quality = quality;
+  loadHLSMedia(hlsUrl) {
+    return new Promise((resolve, reject) => {
+      const hls = new HLS();
+      hls.attachMediaContainer(this.videoPlayer);
 
-      // Start playing the stream
-      source.play();
+      hls.on( 'noprovideo', () => {
+        this.logger.error('No video found in playlist');
+        reject(new Error('No video found'));
+      });
 
-      return source;
+      hls.on( 'error', (event) => {
+        this.logger.error(`HLS error: ${event.details}`);
+        reject(event);
+      });
+
+      hls.on( 'loadedmetadata', () => {
+        resolve();
+      });
     });
   }
 
-  getQualityOptions(mediaUrl) {
-    const hls = new HLS();
-    return hls.getMediaProperties(mediaUrl).then((props) => {
-      // Get the available qualities from the media properties
-      const qualities = props.media.streams.map((stream) => stream.quality);
-
-      return qualities;
-    });
+  loadMPEGTSMedia(mpegTsUrl) {
+    // TO DO: implement MPEG-TS media loading
   }
 }
 
