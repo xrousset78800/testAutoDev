@@ -1,18 +1,21 @@
-// UrlHelper.js
-
 class UrlHelper {
   constructor() {}
 
-  getMediaUrl(mediaId) {
-    return `/media/${mediaId}`;
+  getBaseUrl(url) {
+    const parser = document.createElement('a');
+    parser.href = url;
+    return `${parser.protocol}://${parser.host}`;
   }
 
-  getProxyUrl(proxyHost, mediaUrl) {
-    return `${proxyHost}/${mediaUrl}`;
+  getPathFromUrl(url) {
+    const parser = document.createElement('a');
+    parser.href = url;
+    return parser.pathname;
   }
 
-  getCorsProxyUrl(corsProxyHost, mediaUrl) {
-    return `${corsProxyHost}/ cors-proxy?url=${mediaUrl}`;
+  getUrlParam(name, url) {
+    const params = new URLSearchParams(url);
+    return params.get(name);
   }
 }
 
