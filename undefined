@@ -1,11 +1,35 @@
-video-player.js
-status-display.js
-quality-selector.js
-debug-panel.js
-media-loader.js
-hlsservice.js
-proxy-service.js
-logger.js
-url-helper.js
+function VideoPlayer() {
+    // ...
+}
 
-index.html
+function StatusDisplay() {
+    // ...
+}
+
+function QualitySelector() {
+    // ...
+}
+
+function DebugPanel() {
+    // ...
+}
+
+function MediaLoader() {
+    // ...
+}
+
+function HLSService() {
+    // ...
+}
+
+function ProxyService() {
+    // ...
+}
+
+function Logger() {
+    // ...
+}
+
+function UrlHelper() {
+    // ...
+}
