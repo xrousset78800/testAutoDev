@@ -1,39 +1,66 @@
 // ProxyService.js
 
+import { Logger } from '../services/Logger';
+import { UrlHelper } from '../services/UrlHelper';
+
 class ProxyService {
-  constructor() {}
+  constructor() {
+    this.logger = new Logger('ProxyService');
+    this.urlHelper = new UrlHelper();
+  }
 
-  async getMedia(url) {
+  isCORSAllowed(url) {
+    // Check if the URL is allowed for CORS
+    return true; // TO DO: implement actual CORS check logic
+  }
+
+  getProxyUrl(url, proxyStrategy) {
+    let(proxyUrl);
+    switch (proxyStrategy) {
+      case 'local':
+        proxyUrl = this.urlHelper.getLocalProxyUrl();
+        break;
+      case 'cors':
+        if (!this.isCORSAllowed(url)) {
+          throw new Error('CORS not allowed');
+        }
+        proxyUrl = url; // No need for a proxy, CORS is handled
+        break;
+      default:
+        throw new Error(`Unsupported proxy strategy: ${proxyStrategy}`);
+    }
+    return proxyUrl;
+  }
+
+  resolveProxyUrl(url) {
+    const [protocol, host, path] = this.urlHelper.parseUrl(url);
+    if (host.includes('localhost') || host === '127.0.0.1') {
+      // Localhost or local IP address - no need for a proxy
+      return url;
+    }
+    return this.getProxyUrl(url, 'cors');
+  }
+
+  async fetch(url) {
+    const proxyUrl = this.resolveProxyUrl(url);
     try {
-      const response = await fetch(url);
-      return response.blob();
+      const response = await fetch(proxyUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to load ${url}: ${response.statusText}`);
+      }
+      return response;
     } catch (error) {
-      console.error('Error fetching media:', error);
-      // Fallback to VLC or other players if necessary
-      throw new Error(`Failed to load media: ${url}`);
+      this.logger.error(error.message);
+      // TO DO: implement retry logic or fallback strategy
     }
   }
 
-  async setProxy(url, proxyUrl) {
-    try {
-      const response = await fetch(proxyUrl + '/' + url);
-      return response.blob();
-    } catch (error) {
-      console.error('Error setting proxy:', error);
-      // Fallback to VLC or other players if necessary
-      throw new Error(`Failed to load media: ${url}`);
+  async request(url, method = 'GET', data = null) {
+    const response = await this.fetch(url, { method, data });
+    if (!response.ok) {
+      throw new Error(`Failed to load ${url}: ${response.statusText}`);
     }
-  }
-
-  async setCorsProxy(url, corsProxyUrl) {
-    try {
-      const response = await fetch(corsProxyUrl + '/' + url);
-      return response.blob();
-    } catch (error) {
-      console.error('Error setting CORS proxy:', error);
-      // Fallback to VLC or other players if necessary
-      throw new Error(`Failed to load media: ${url}`);
-    }
+    return response;
   }
 }
 
