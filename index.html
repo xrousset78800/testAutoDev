@@ -3,11 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecteur Vidéo Avancé</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Video Player</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app"></div>
+    <div class="container">
+        <!-- Video player -->
+        <video id="video-player" width="100%" controls></video>
+        
+        <!-- Status display -->
+        <p id="status-display"></p>
+
+        <!-- Quality selector -->
+        <select id="quality-selector">
+            <!-- Options will be populated dynamically -->
+        </select>
+
+        <!-- Debug panel -->
+        <div id="debug-panel">
+            <h2>Debug Panel</h2>
+            <ul id="metrics-list"></ul>
+        </div>
+    </div>
+
     <script src="index.js"></script>
 </body>
 </html>
