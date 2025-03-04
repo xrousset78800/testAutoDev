@@ -1,48 +1,42 @@
+
+// DebugPanel.js
+import { Logger } from './Logger';
+import { UrlHelper } from './UrlHelper';
+
 class DebugPanel {
-    constructor(videoPlayer) {
-        this.videoPlayer = videoPlayer;
-        this.container = document.getElementById('debug-panel');
+  constructor() {
+    this.logger = new Logger();
+    this.urlHelper = new UrlHelper();
 
-        // Initialize with initial state
-        this.update();
-    }
+    // Initialize debug panel elements
+    const debugPanelContainer = document.getElementById('debug-panel');
+    this.debugListElement = document.createElement('ul');
+    debugPanelContainer.appendChild(this.debugListElement);
+  }
 
-    update() {
-        const debugInfo = this.getDebugInfo();
+  /**
+   * Logs a message to the console and updates the debug list
+   *
+   * @param {string} message The log message
+   */
+  logMessage(message) {
+    const logItem = this.createLogItem(message);
+    this.debugListElement.appendChild(logItem);
 
-        if (debugInfo) {
-            let htmlString = '';
+    // Log the message using Logger service
+    this.logger.log(`Debug: ${message}`);
+  }
 
-            for (let [key, value] of Object.entries(debugInfo)) {
-                htmlString += `<p><b>${key}</b>: ${value}</p>`;
-            }
-
-            this.container.innerHTML = '';
-            this.container.innerHTML += `${htmlString}`;
-        }
-    }
-
-    getDebugInfo() {
-        let debugInfo;
-
-        if (this.videoPlayer.isPlaying()) {
-            // Get current playback information
-            const currentTimecode = this.videoPlayer.getCurrentTimecode();
-            const bufferLength = this.videoPlayer.getBufferLength();
-            const bitrate = this.videoPlayer.getBitrate();
-
-            debugInfo = {
-                'Current Timecode': `${currentTimecode}`,
-                'Buffer Length': `${bufferLength} seconds`,
-                'Bitrate': `${bitrate} kbps`
-            };
-        } else {
-            // No playback information available
-            debugInfo = null;
-        }
-
-        return debugInfo;
-    }
+  /**
+   * Creates a new list item for logging messages
+   *
+   * @param {string} message The log message
+   */
+  createLogItem(message) {
+    const listItem = document.createElement('li');
+    listItem.textContent = `${this.urlHelper.formatTimestamp(new Date())}: ${message}`;
+    return listItem;
+  }
 }
 
 export default DebugPanel;
