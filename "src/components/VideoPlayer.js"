@@ -1,0 +1,53 @@
+
+import React, { useState, useEffect } from 'react';
+import HLSService from '../services/HLSService';
+
+const VideoPlayer = () => {
+  const [videoUrl, setVideoUrl] = useState('');
+  const [qualityOptions, setQualityOptions] = useState([]);
+  const [currentQuality, setCurrentQuality] = useState('');
+
+  useEffect(() => {
+    // Initialize the video player with a default URL
+    setVideoUrl('/path/to/default/video.mp4');
+  }, []);
+
+  const handleVideoChange = (newVideoUrl) => {
+    setVideoUrl(newVideoUrl);
+  };
+
+  const handleQualityChange = (qualityOption) => {
+    setCurrentQuality(qualityOption);
+  };
+
+  useEffect(() => {
+    // Load the video stream with HLSService
+    if (videoUrl) {
+      HLSService.load(videoUrl, currentQuality)
+        .then((stream) => {
+          console.log('Video loaded:', stream);
+        })
+        .catch((error) => {
+          console.error('Error loading video:', error);
+        });
+    }
+  }, [videoUrl, currentQuality]);
+
+  return (
+    <div>
+      <h2>Video Player</h2>
+      <p>Current Video: {videoUrl}</p>
+      <label>
+        Quality:
+        {' '}
+        <select value={currentQuality} onChange={(e) => handleQualityChange(e.target.value)}>
+          {qualityOptions.map((option, index) => (
+            <option key={index}>{option}</option>
+          ))}
+        </select>
+      </label>
+    </div>
+  );
+};
+
+export default VideoPlayer;
