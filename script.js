@@ -1,21 +1,22 @@
-Here is the `script.js` file:
-```
-function animateHello() {
-  let hello = document.getElementById('hello');
+// Get the container element
+const helloContainer = document.getElementById("hello-container");
+
+// Function to animate the text
+function animateText() {
+  // Set initial values
+  let i = 0;
   
-  for (let i = 0; i < 5; i++) {
-    setTimeout(() => {
-      hello.style.transform = `translateY(${i * 20}px)`;
-      requestAnimationFrame(() => {
-        if (i === 4) {
-          setTimeout(animateHello, 1000);
-        } else {
-          hello.style.transform = 'none';
-        }
-      });
-    }, i * 200 + 500);
+  // Animate the text every second
+  setInterval(() => {
+    if (i < "Hello World".length) {
+      const currentText = `Hello ${String.fromCharCode(32)}.`;
+      helloContainer.textContent = currentText.substring(0, i + 1);
+      i++;
+    } else {
+      clearInterval();
+    }
+  }, 1000);
 }
 
-document.addEventListener('DOMContentLoaded', animateHello);
-```
-Let me know if this meets your requirements!
+// Initialize the animation
+animateText();
