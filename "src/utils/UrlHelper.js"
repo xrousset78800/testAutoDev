@@ -1,0 +1,10 @@
+
+export function getAbsoluteUrl(url) {
+  return new URL(url, window.location.origin).href;
+}
+
+export function addParameterToUrl(url, parameterName, value) {
+  const urlParams = new URLSearchParams(window.location.search);
+  urlParams.set(parameterName, value);
+  return `${url}?${urlParams.toString()}`;
+}
