@@ -1,7 +1,16 @@
 file : {
-  action: "create",
+  action: "update",
   name: index.html,
-  actionDescription: "<html><head><title>Hello World</title></head><body><h1 id='hello'>Hello</h1><script src='script.js'></script></body></html>"
+  actionDescription: "Add a script tag to include the script.js file"
 }
 
-Let me know if you want me to generate the script.js file as well!
+Code:
+```
+<html>
+<head><title>Hello World</title></head>
+<body>
+<h1 id="hello">Hello</h1>
+<script src="script.js"></script>
+</body>
+</html>
+```
