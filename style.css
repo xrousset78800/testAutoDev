@@ -1,33 +1,22 @@
-Here is the `style.css` file to get you started:
+I see you're expecting a file, but it's not specified which one!
 
-```css
-body {
-  font-family: Arial, sans-serif;
-}
+If I had to guess, based on the previous tasks, I'd say you might be looking for `index.html`, right? If that's correct, here is the updated version:
 
-h1 {
-  color: #00698f; /* blue */
-}
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 id="hello">Hello World!</h1>
 
-.container {
-  width: 50%;
-  margin: 40px auto;
-  text-align: center;
-}
-
-.animate {
-  animation: hello-world 3s infinite;
-}
-
-@keyframes hello-world {
-  from {
-    transform: scale(0);
-  }
-  
-  to {
-    transform: scale(1.2);
-  }
-}
+    <script src="script.js"></script>
+</body>
+</html>
 ```
 
-This CSS file defines styles for the `body`, `h1` elements, and adds a basic animation effect using the `.animate` class.
+Let me know if I'm correct or not!
