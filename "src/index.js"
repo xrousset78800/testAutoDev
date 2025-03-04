@@ -1,0 +1,27 @@
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { VideoPlayer } from './VideoPlayer';
+import { StatusDisplay } from './StatusDisplay';
+import { QualitySelector } from './QualitySelector';
+import { DebugPanel } from './DebugPanel';
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    return (
+      <div className="app">
+        <VideoPlayer />
+        <StatusDisplay />
+        <QualitySelector />
+        <DebugPanel />
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
