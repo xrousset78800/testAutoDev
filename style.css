@@ -1,0 +1,33 @@
+Here is the `style.css` file to get you started:
+
+```css
+body {
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  color: #00698f; /* blue */
+}
+
+.container {
+  width: 50%;
+  margin: 40px auto;
+  text-align: center;
+}
+
+.animate {
+  animation: hello-world 3s infinite;
+}
+
+@keyframes hello-world {
+  from {
+    transform: scale(0);
+  }
+  
+  to {
+    transform: scale(1.2);
+  }
+}
+```
+
+This CSS file defines styles for the `body`, `h1` elements, and adds a basic animation effect using the `.animate` class.
