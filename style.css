@@ -1,0 +1,12 @@
+Here is the `style.css` file:
+```
+body {
+  font-family: Arial, sans-serif;
+}
+
+#hello {
+  position: relative;
+  transform: translateY(0);
+  transition: transform 1s ease-out;
+}
+```
