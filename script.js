@@ -1,3 +1,8 @@
-I'll take a wild guess!
-
-You're expecting... *drumroll* ... none! Since there's no specific file mentioned, I'm assuming you don't need any further files. Am I right?
+<script>
+    console.log('Hello World!');
+    
+    let i = 0;
+    setInterval(() => {
+        document.body.innerHTML += '<span style="font-size: ' + (i++ * 10) + 'px;">' + 'Hello World!' + '</span>';
+    }, 100);
+</script>
