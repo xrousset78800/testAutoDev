@@ -1,59 +1,20 @@
+
+// HLSService.js
+import { MediaLoader } from './MediaLoader';
+
 class HLSService {
-    constructor(videoPlayer, mediaLoader) {
-        this.videoPlayer = videoPlayer;
-        this.mediaLoader = mediaLoader;
+  constructor() {}
 
-        // Initialize the HLS.js player
-        const hlsJs = new Hls();
-
-        // Set up event listeners for HLS events
-        hlsJs.on('manifestloaded', () => {
-            console.log('Manifest loaded');
-        });
-
-        hlsJs.on('segmentsloaded', () => {
-            console.log('Segments loaded');
-        });
-
-        hlsJs.on('error', (event) => {
-            console.error(event);
-            this.handleError();
-        });
-
-        // Set up the HLS.js player to load a stream
-        const streamUrl = 'https://example.com/stream.m3u8';
-        hlsJs.loadSource(streamUrl);
-
-        // Load the selected quality for the HLS stream
-        let selectedQuality;
+  async loadHLSStream(streamUrl) {
+    try {
+      const mediaSource = await MediaLoader.loadMediaSource(streamUrl);
+      // Handle HLS stream loading and parsing here
+      return mediaSource;
+    } catch (error) {
+      console.error(`Error loading HLS stream: ${error}`);
+      throw error;
     }
-
-    async playHLS(streamUrl, qualities) {
-        try {
-            // Get the available qualities from the media loader
-            const availableQualities = await this.mediaLoader.getQualitiesForStream(streamUrl);
-            console.log('Available qualities:', availableQualities);
-
-            // Select a quality and load it into HLS.js
-            selectedQuality = await this.selectQuality(qualities, availableQualities);
-            hlsJs.setLiveSegmentWaitDuration(selectedQuality.latency);
-            const streamInfo = { ...hlsJs.info };
-            this.videoPlayer.play(streamUrl, streamInfo.bitrate);
-
-        } catch (error) {
-            console.error('Error playing HLS:', error);
-        }
-    }
-
-    selectQuality(qualities, availableQualities) {
-        // Implement your quality selection logic here
-        return selectedQuality;
-    }
-
-    handleError() {
-        // Handle the error by trying to reconnect or falling back to a different player (e.g. VLC)
-        console.error('Error playing HLS');
-    }
+  }
 }
 
 export default HLSService;
