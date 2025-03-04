@@ -1,0 +1,21 @@
+// src/services/Logger.js
+
+class Logger {
+  constructor() {
+    this.logLevel = 'DEBUG';
+  }
+
+  log(message) {
+    if (this.logLevel === 'DEBUG') {
+      console.debug(message);
+    } else if (this.logLevel === 'INFO') {
+      console.info(message);
+    }
+  }
+
+  setLogLevel(level) {
+    this.logLevel = level;
+  }
+}
+
+export default new Logger();
