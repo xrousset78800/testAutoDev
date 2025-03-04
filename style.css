@@ -1,0 +1,8 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+#hello {
+  color: #4CAF50; /* green */
+  text-align: center;
+}
