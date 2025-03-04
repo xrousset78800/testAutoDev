@@ -1,16 +1,20 @@
 file : {
-  action: "update",
-  name: index.html,
-  actionDescription: "Add a script tag to include the script.js file"
+  action: "create",
+  name: script.js,
+  actionDescription: "Create the JavaScript file with the blinking animation"
 }
 
 Code:
 ```
-<html>
-<head><title>Hello World</title></head>
-<body>
-<h1 id="hello">Hello</h1>
-<script src="script.js"></script>
-</body>
-</html>
+function animateHello() {
+  let hello = document.getElementById('hello');
+  setInterval(() => {
+    if (hello.textContent === 'Hello') {
+      hello.textContent = 'World!';
+    } else {
+      hello.textContent = 'Hello';
+    }
+  }, 1000);
+}
+animateHello();
 ```
