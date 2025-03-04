@@ -1,0 +1,35 @@
+
+import React from 'react';
+import Logger from '../services/Logger';
+
+const StatusDisplay = ({ message, instruction }) => {
+  return (
+    <div>
+      {message && (
+        <p className="status-message">
+          {message}
+        </p>
+      )}
+      {instruction && (
+        <p className="status-instruction">
+          {instruction}
+        </p>
+      )}
+    </div>
+  );
+};
+
+export default StatusDisplay;
+import React from 'react';
+import StatusDisplay from './StatusDisplay';
+
+const MyComponent = () => {
+  const message = 'Loading video...';
+  const instruction = 'Please wait while the video loads.';
+  
+  return (
+    <div>
+      <StatusDisplay message={message} instruction={instruction} />
+    </div>
+  );
+};
