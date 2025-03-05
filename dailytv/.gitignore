@@ -1,0 +1,8 @@
+#.gitignore file for dailytv repository
+# Ignore node_modules directory
+node_modules/
+
+# Ignore temp files and directories
+*.tmp
+*~
+temp/
