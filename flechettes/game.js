@@ -1,23 +1,21 @@
-// .game.js
-let score = 0;
-let targetScore = 10;
+// Définir les variables
+let playerScore = 0;
+let dartboard = {
+    sections: [
+        { name: "Double", value: 2 },
+        { name: "Triple", value: 3 },
+        { name: "Bullseye", value: 50 }
+    ]
+};
 
-function startGame() {
-    document.getElementById("dartboard-title").innerText = "Dart Game";
+// Fonction pour mettre à jour le score du joueur
+function updateScore() {
+    // Mettre à jour le score ici (par exemple, en fonction des résultats du jeu)
+    playerScore = 10; // Exemple de mise à jour du score
 }
 
-function hitTarget() {
-    score++;
-    document.getElementById("score").innerText = `Score: ${score}`;
-    
-    if (score >= targetScore) {
-        alert(`Félicitations ! Vous avez atteint le score de ${targetScore} points.`);
-        location.href = "./dartboard.html"; // Rediriger vers la page dartboard
-    }
-}
+// Appeler la fonction d'actualisation du score une fois que le jeu est lancé
+updateScore();
 
-document.addEventListener("DOMContentLoaded", startGame);
-
-// Get the score element and set its initial value
-let scoreElement = document.getElementById("score");
-scoreElement.innerText = `Score: 0`;
+// Exporter les variables et les fonctions pour être utilisées dans le fichier HTML
+export { playerScore, dartboard };
