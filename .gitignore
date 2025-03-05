@@ -1,4 +1,2 @@
-# Ignore files that are not necessary for the project
-node_modules/
-*.log
-*.tmp
+# Ignore everything in the root directory
+*
