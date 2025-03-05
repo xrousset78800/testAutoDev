@@ -1,0 +1,73 @@
+[
+    {
+        "id": 1,
+        "name": "France Télévisions",
+        "programmes": [
+            {
+                "title": "Les Feux de l'Enfer",
+                "description": "Série policière américaine",
+                "time": "20h00"
+            },
+            {
+                "title": "Le Grand Journal",
+                "description": "Journal télévisé français",
+                "time": "19h30"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "M6",
+        "programmes": [
+            {
+                "title": "Taratata",
+                "description": "Émission de musique française",
+                "time": "18h00"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "W9",
+        "programmes": [
+            {
+                "title": "Les Petits Meurtres d'Agatha Christie",
+                "description": "Série policière britannique",
+                "time": "21h00"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "C8",
+        "programmes": [
+            {
+                "title": "Les Revenants",
+                "description": "Série fantastique française",
+                "time": "22h00"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Canal+",
+        "programmes": [
+            {
+                "title": "Napoleon Dynamite",
+                "description": "Film américain de comédie",
+                "time": "23h00"
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "name": "Arte",
+        "programmes": [
+            {
+                "title": "La Vie en rose",
+                "description": "Documentaire sur Édith Piaf",
+                "time": "20h30"
+            }
+        ]
+    }
+]
