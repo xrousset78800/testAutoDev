@@ -1,0 +1,16 @@
+{
+    "programmes": [
+        {
+            "name": "Les Feux de l'Amour",
+            "channel": "TF1"
+        },
+        {
+            "name": "Plus Belle la Vie",
+            "channel": "France 3"
+        },
+        {
+            "name": "Toute Première Heure",
+            "channel": "W9"
+        }
+    ]
+}
