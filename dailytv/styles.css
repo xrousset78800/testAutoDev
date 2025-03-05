@@ -1,29 +1,37 @@
 body {
   font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
 }
 
-.program-listing {
+#program-listing {
   max-width: 800px;
   margin: 40px auto;
   padding: 20px;
   border: 1px solid #ddd;
-  box-shadow: 0 2px 4px rgba(0,0,0,.06);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
 }
 
-.program-listing h2 {
+.program-listing-item {
+  background-color: #fff;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.program-listing-item h2 {
   font-weight: bold;
-  color: #333;
+  margin-top: 0;
 }
 
-.program-listing ul {
-  list-style-type: none;
-  padding-left: 20px;
+.air-time {
+  color: #666;
+  font-size: .8em;
 }
 
-.program-listing li {
-  margin-bottom: 10px;
-}
+/* Add some basic styling for the program listing items */
+(program-listing-item:nth-child(even) {
+  background-color: #f7f7f7;
+})
 
-.program-listing .channel {
-  font-size: smaller;
+.program-listing-item:hover {
+  background-color: #f5f5f5;
 }
