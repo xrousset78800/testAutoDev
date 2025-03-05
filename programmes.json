@@ -1,12 +1,12 @@
 [
   {
     "name": "Programme TV",
-    "time": "14:00",
-    "channel": "France Télévisions"
+    "time": "14:00-15:30",
+    "channel": "France 2"
   },
   {
-    "name": "TNT du jour",
-    "time": "16:30",
-    "channel": "Canal+"
+    "name": "TNT Programme",
+    "time": "16:00-17:30",
+    "channel": "BeIN Sports"
   }
 ]
