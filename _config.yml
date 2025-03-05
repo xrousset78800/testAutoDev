@@ -1,0 +1,10 @@
+language: fr
+title: Programmes TV et TNT du jour
+
+paths:
+  - index.html
+  - programmes.json
+  - styles.css
+
+files:
+  - programmes.json: ./programmes.json
