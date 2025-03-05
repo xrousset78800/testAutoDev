@@ -1,0 +1,18 @@
+[
+  {
+    "time": "08:00",
+    "channel": "TF1",
+    "programme": "Bonjour en France"
+  },
+  {
+    "time": "09:00",
+    "channel": "France 2",
+    "programme": "Les Petits Meurtres d'Agatha Christie"
+  },
+  {
+    "time": "10:30",
+    "channel": "M6",
+    "programme": "Star Academy"
+  },
+  ...
+]
