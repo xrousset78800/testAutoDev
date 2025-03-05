@@ -1,32 +1,35 @@
-/* .style.css */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
+/* Style for the scoreboard */
+#scoreboard-table {
+  border-collapse: collapse;
 }
 
-#score {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-}
-
-.dartboard {
-  width: 300px;
-  height: 400px;
-  border: solid 1px #ccc;
-  margin: auto;
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
   text-align: center;
 }
 
-.target {
-  position: absolute;
-  top: calc(50% - 25px);
-  left: calc(50% - 12.5px);
-  font-size: 36px;
+th {
+  background-color: #f0f0f0;
+}
+
+td {
+  font-size: 18px;
+}
+
+/* Style for the dartboard */
+.dartboard-section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.dartboard-section label {
   font-weight: bold;
-  color: #666;
+  text-align: center;
+}
+
+.dartboard-section input[type="number"] {
+  width: 50%;
+  padding: 10px;
 }
