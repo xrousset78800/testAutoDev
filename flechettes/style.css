@@ -1,6 +1,0 @@
-import base64
-
-base64_string = "LyogU3R5bGUgZm9yIHRoZSBzY29yZWJvYXJkICovCiNzY29yZWJvYXJkLXRh"
-decoded_string = base64.b64decode(base64_string).decode("utf-8")
-
-print(decoded_string)
