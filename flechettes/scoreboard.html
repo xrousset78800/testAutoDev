@@ -1,30 +1,20 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scoreboard</title>
-    <link rel="stylesheet" href=".style.css"> <!-- lien vers le fichier style.css -->
+  <title>Scoreboard</title>
 </head>
 <body>
-    <h1>Scoreboard</h1>
-    <table id="scoreboard-table">
-        <thead>
-            <tr>
-                <th>Joueur</th>
-                <th>Pontuation</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Player 1</td>
-                <td id="player-1-score">0</td>
-            </tr>
-        </tbody>
-    </table>
+  <!-- The scoreboard container -->
+  <div id="scoreboard">
+    <!-- The dartboard game interface -->
+    <canvas id="dartboard" width="400" height="400"></canvas>
+    <!-- The score display -->
+    <p id="current-score">0</p>
+    <!-- The player name input field -->
+    <input type="text" id="player-name" placeholder="Enter your name">
+  </div>
 
-    <!-- script pour mettre à jour le scoreboard -->
-    <script src=".game.js"></script> <!-- lien vers le fichier game.js -->
-
+  <!-- The JavaScript code to handle the game logic and update the scoreboard -->
+  <script src="scoreboard.js"></script>
 </body>
 </html>
