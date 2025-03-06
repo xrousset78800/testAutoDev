@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programme TV du Jour</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <h1>Programme TV du Jour</h1>
+    <ul id="program-list"></ul>
+
+    <!-- Load the API script -->
+    <script src "./api.js"></script>
+
+    <!-- Call the getDailyProgram function to retrieve and display daily TV programs -->
+    <script>
+        const api = require('./api');
+        api.getDailyProgram().then((data) => {
+            const programList = document.getElementById('program-list');
+
+            data.forEach(program => {
+                const programItem = document.createElement('li');
+                programItem.textContent = `${program.title} - ${program.time}`;
+                programList.appendChild(programItem);
+            });
+        })
+    </script>
+</body>
+</html>
