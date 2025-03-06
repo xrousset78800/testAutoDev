@@ -1,27 +1,46 @@
 const express = require('express');
 const app = express();
-app.use(express.json());
+app.use(express.static('.'));
 
-// Define a route to handle publication creation requests.
-app.post('/create-publication', (req, res) => {
-  const { permalink } = req.body;
+// Base de donnée clients
+let clientsDB = {
+  "John Doe": {"nom": "John", "prenom": "Doe", "telephoneMobile": "+33 6 12 34 56", "email": "john.doe@example.com"},
+  // Add more clients here...
+};
 
-  // Send the WhatsApp message with the permalink.
-  sendWhatsAppMessage(permalink);
-
-  res.send(`Publication created successfully!`);
+// Interface de creation de publication, type vente privée ou vente en cours
+app.get('/create-publication', (req, res) => {
+  res.sendFile('publication-form.html');
 });
 
-function sendWhatsAppMessage(link) {
-  console.log(`Sending WhatsApp message: ${link}`);
+// Choix de photos et videos, renseignement de description et prix
+let publications = [];
 
-  // Implement your own WhatsApp API client here.
-  // For example, you can use the 'whatsapp-web.js' library.
+app.post('/submit-publication', (req, res) => {
+  let publicationData = req.body;
+  // Add logic to create a new publication here...
+  res.send(`Publication créée avec succès !`);
+});
 
-  return;
-}
+// Soumettre le formulaire pour creer un permalien
+app.get('/generate-permalink/:id', (req, res) => {
+  let id = req.params.id;
+  // Add logic to generate a permalink here...
+  res.sendFile('permalink.html');
+});
 
-// Start the Express server.
+// Envoyer le permalien via whatsapp au client
+app.post('/send-whatsapp-message', (req, res) => {
+  let messageData = req.body;
+  // Add logic to send the WhatsApp message here...
+  res.send(`Message envoyé avec succès !`);
+});
+
+// Interface simple de gestion des admins, publications etc.
+app.get('/admin-interface', (req, res) => {
+  res.sendFile('admin-interface.html');
+});
+
 app.listen(3000, () => {
   console.log('Server started on port 3000!');
 });
