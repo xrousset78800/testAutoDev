@@ -1,27 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-	<title>Publishment Form</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publication Form</title>
+    <link rel="stylesheet" href="./style.css"> <!-- Include CSS styles from style.css -->
 </head>
 <body>
-	<h1>Create a Publication</h1>
-	<form action="#" method="post" enctype="multipart/form-data">
-		<label for="type">Publication Type:</label><br />
-		<select id="type" name="type">
-			<option value="private_sale">Private Sale</option>
-			<option value="ongoing_sale">Ongoing Sale</option>
-		</select><br /><br />
-		
-		<label for="photos_videos">Add Photos and Videos:</label><br />
-		<input type="file" id="photos_videos" name="photos_videos[]" multiple accept=".jpg, .jpeg, .png, .gif, .mp4, .mov"><br /><br />
-		
-		<label for="description">Description:</label><br />
-		<textarea id="description" name="description"></textarea><br /><br />
-		
-		<label for="price">Price:</label><br />
-		<input type="number" id="price" name="price"><br /><br />
-		
-		<button type="submit">Submit</button>
-	</form>
+    <h2>Publish a new item for sale or rent!</h2>
+    <form action="/submit-publication" method="post">
+        <label for="publication-type">Publication type:</label>
+        <select id="publication-type" name="publication-type">
+            <option value="private-sale">Private Sale</option>
+            <option value="rental">Rental</option>
+        </select><br><br>
+
+        <!-- Add more form fields here... -->
+
+    </form>
 </body>
 </html>
