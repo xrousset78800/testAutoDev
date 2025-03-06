@@ -1,35 +1,47 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programme TV et TNT de la journée - Actualité</title>
-    <!-- Mettre le contenu actuel en base64 -->
+    <title>Programme TV</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
         }
         
-        .container {
-            max-width: 800px;
-            margin: 40px auto;
+        .program-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 20px;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, .06);
         }
         
-        h1 {
-            font-weight: bold;
-            margin-top: 20px;
+        .program-item {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Programme TV et TNT de la journée - Actualité</h1>
-        <!-- Mettre le contenu actuel en base64 -->
+    <h1>Programme TV de la journée</h1>
+    
+    <!-- Programme container -->
+    <div class="program-container">
+        <!-- Load program data from API or database -->
+        {% for program in programs %}
+            <div class="program-item">
+                {{ program.title }}
+                {{ program.description }}
+                {{ program.time }}
+            </div>
+        {% endfor %}
+        
+        <!-- Comment section -->
+        <script src="comments.js"></script>
     </div>
 </body>
 </html>
