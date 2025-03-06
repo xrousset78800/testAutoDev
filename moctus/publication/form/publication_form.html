@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Publication Form</title>
-    <link rel="stylesheet" href="./style.css"> <!-- Include CSS styles from style.css -->
+    <title>Publish a new item</title>
 </head>
 <body>
     <h2>Publish a new item for sale or rent!</h2>
-    <form action="/submit-publication" method="post">
+    <form action="/submit-publication" method="post" enctype="multipart/form-data">
         <label for="publication-type">Publication type:</label>
         <select id="publication-type" name="publication-type">
             <option value="private-sale">Private Sale</option>
             <option value="rental">Rental</option>
         </select><br><br>
 
-        <!-- Add more form fields here... -->
+        <input type="file" accept=".jpg, .jpeg, .png, .gif" multiple>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description"></textarea><br><br>
 
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price"><br><br>
+
+        <button type="submit">Submit</button>
     </form>
 </body>
 </html>
