@@ -1,34 +1,47 @@
-import { Worker } from '@google-cloud/worker';
-const worker = new Worker({
-  // Create a new instance of the WhatsApp API client.
-  createClient: () => {
-    const whatsAppApi = require('whatsapp-web.js');
-    return whatsAppApi;
-  },
-});
+const express = require('express');
+const app = express();
+app.use(express.json());
 
-// Define a function to handle incoming messages
-async function handleMessage(message) {
-  console.log(`Received message from ${message.from}: ${message.body}`);
+let whatsappClient;
 
-  // Check if the message is related to a publication creation request.
-  const regex = /create-publication (.*)/i;
-  if (regex.test(message.body)) {
-    const [_, permalink] = message.body.match(regex);
-    await sendWhatsAppMessage(permalink, message.from);
+async function startWhatsApp() {
+  const WhatsAppApi = require('whatsapp-web.js');
+
+  // Initialize the WhatsApp API client.
+  whatsappClient = new WhatsAppApi();
+
+  // Handle incoming messages from WhatsApp.
+  whatsappClient.on('message', async (msg) => {
+    console.log(`Received message: ${msg.body}`);
+
+    if (!process.env.WHATSAPP_API_TOKEN || !process.env.WHATSAPP_API_PHONE_NUMBER) {
+      return;
+    }
+
+    try {
+      await handleWhatsAppMessage(msg);
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  // Start the WhatsApp API client.
+  whatsappClient.start();
+}
+
+async function handleWhatsAppMessage(message) {
+  if (!message.body.includes('create-publication')) {
+    return;
   }
+
+  const [permalink] = message.body.split(' ');
+  permalink = permalink.trim();
+
+  console.log(`Received create-publication request for ${permalink}`);
+
+  // Send a response to the WhatsApp user.
+  await whatsappClient.sendMessage(message.from, `Voir la publication : ${permalink}`);
 }
 
-// Define a function to handle sending WhatsApp messages
-async function sendWhatsAppMessage(permalink, recipient) {
-  console.log(`Sending WhatsApp message with permalink ${permalink} to ${recipient}`);
-
-  // Send the WhatsApp message using the WhatsApp API client.
-  const whatsAppApi = await worker.createClient();
-  whatsAppApi.sendMessage(recipient, `Voir la publication : ${permalink}`);
-}
-
-// Start listening for incoming messages
-worker.on('message', handleMessage);
-
-export default worker;
+// Start the worker that pushes publications to WhatsApp.
+startWhatsApp();
