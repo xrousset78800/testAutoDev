@@ -2,58 +2,67 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.container {
+.admin-interface {
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.publication-form {
   max-width: 800px;
   margin: 40px auto;
   padding: 20px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 4px rgba(0,0,0,.06);
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.header {
-  background-color: #333;
-  color: #fff;
+.publication-form input[type="text"], .publication-form select {
+  width: 100%;
   padding: 10px;
-  text-align: center;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.header h1 {
-  font-size: 24px;
-}
-
-.form-container {
-  max-width: 400px;
-  margin: 40px auto;
-  padding: 20px;
-}
-
-.input-field {
+.publication-form .photo-video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 20px;
 }
 
-.label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-.input-text {
+.publication-form .photo-video-container img {
   width: 100%;
-  height: 40px;
-  font-size: 16px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.publication-form .description-input {
+  width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
-}
-
-.button-submit {
-  background-color: #4CAF50;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
+  margin-bottom: 20px;
   border-radius: 5px;
-  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.button-submit:hover {
-  background-color: #3e8e41;
+.publication-form .price-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.publication-form button[type="submit"] {
+  background-color: #00698f;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.publication-form button[type="submit"]:hover {
+  background-color: #004d7f;
 }
