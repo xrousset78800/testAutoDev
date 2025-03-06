@@ -10,26 +10,49 @@
     <header>
         <nav>
             <ul>
-                <li><a href="#publication-form">Créer une publication</a></li>
-                <li><a href="#admin-interface">Gestion des admins et publications</a></li>
+                <li><a href="#create-publication">Créer une publication</a></li>
+                <li><a href="#manage-publications">Gérer les publications</a></li>
+                <li><a href="#manage-clients">Gérer les clients</a></li>
             </ul>
         </nav>
     </header>
+
     <main>
-        <section id="publication-form">
+        <!-- Create Publication Form -->
+        <section id="create-publication">
             <h2>Créer une publication</h2>
-            <form action="/create-publication" method="post" enctype="multipart/form-data">
-                <!-- Form fields will be added here -->
+            <form action="/create-publication" method="post">
+                <label for="title">Titre :</label>
+                <input type="text" name="title" required>
+
+                <label for="description">Description :</label>
+                <textarea name="description"></textarea>
+
+                <label for="price">Prix :</label>
+                <input type="number" name="price">
+
+                <select name="type">
+                    <option value="private-sale">Vente privée</option>
+                    <option value="ongoing-auction">Auction en cours</option>
+                </select>
+
+                <button type="submit">Créer la publication</button>
             </form>
         </section>
-        <section id="admin-interface">
-            <h2>Gestion des admins et publications</h2>
-            <a href="#publication-list">Liste des publications</a>
-            <a href="#client-list">Liste des clients</a>
+
+        <!-- Manage Publications Section -->
+        <section id="manage-publications">
+            <h2>Gérer les publications</h2>
+            <!-- This section will be populated with a list of publications later -->
+        </section>
+
+        <!-- Manage Clients Section -->
+        <section id="manage-clients">
+            <h2>Gérer les clients</h2>
+            <!-- This section will be populated with a list of clients later -->
         </section>
     </main>
 
-    <!-- Scripts will be added here -->
     <script src="index.js"></script>
 </body>
 </html>
