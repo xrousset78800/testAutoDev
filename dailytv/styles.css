@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.program-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0,0,0,.06);
+}
+
+.program-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.program-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.program-list li:last-child {
+    border-bottom: none;
+}
+
+.time-slot {
+    font-weight: bold;
+    color: #666;
+}
+
+.show-title {
+    font-size: 18px;
+}
