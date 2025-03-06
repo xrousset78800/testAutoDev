@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.program-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.program-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.program-item {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+
+.program-item:last-child {
+    border-bottom: none;
+}
