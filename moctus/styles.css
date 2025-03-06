@@ -2,54 +2,24 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.publication-manager-container {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 4px rgba(0,0,0,.06);
-}
-
-.publication-manager-header {
+.header {
   background-color: #333;
   color: #fff;
   padding: 10px;
   text-align: center;
 }
 
-.publication-manager-form-group {
-  margin-bottom: 20px;
+.header h1 {
+  font-size: 24px;
 }
 
-.publication-manager-label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.publication-manager-input-field {
-  width: calc(100% - 10px);
-  padding: 0.5em;
-  font-size: 16px;
-  border-radius: 4px;
-  box-shadow: none;
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-}
-
-.publication-manager-input-field:focus {
-  box-shadow: 0 0 10px rgba(0,0,0,.2);
-}
-
-.publication-manager-button {
-  background-color: #4CAF50;
+.footer {
+  background-color: #666;
   color: #fff;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
+  padding: 10px;
+  text-align: center;
 }
 
-.publication-manager-button:hover {
-  background-color: #3e8e41;
+.footer p {
+  margin-bottom: 20px;
 }
