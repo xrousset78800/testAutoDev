@@ -1,18 +1,31 @@
-// Import the API endpoint from api.js
-const { getDailyProgram } = require('./api');
+// script.js
+function getPrograms() {
+  fetch('program.json')
+    .then(response => response.json())
+    .then(data => {
+      const programs = data.programs;
+      const programContainer = document.getElementById('programs');
+      
+      programs.forEach(program => {
+        const programItem = document.createElement('div');
+        programItem.className = 'program-item';
+        
+        const title = document.createElement('h2');
+        title.textContent = program.title;
+        programItem.appendChild(title);
+        
+        const description = document.createElement('p');
+        description.textContent = program.description;
+        programItem.appendChild(description);
+        
+        const time = document.createElement('span');
+        time.textContent = `(${program.time})`;
+        programItem.appendChild(time);
+        
+        programContainer.appendChild(programItem);
+      });
+    })
+    .catch(error => console.error(error));
+}
 
-// Get the program list element
-const programListElement = document.getElementById('program-list');
-
-// Call the API to retrieve daily TV programs
-getDailyProgram().then(programData => {
-  // Clear any existing content in the program list
-  programListElement.innerHTML = '';
-
-  // Loop through each show and add it to the program list
-  programData.forEach(show => {
-    const li = document.createElement('li');
-    li.textContent = `${show.timeSlot} - ${show.showTitle}`;
-    programListElement.appendChild(li);
-  });
-});
+getPrograms();
