@@ -1,14 +1,15 @@
-[
-  {
-    "timeSlot": "09:00 - 10:30 AM",
-    "showTitle": "TV Show 1"
-  },
-  {
-    "timeSlot": "11:00 - 12:30 PM",
-    "showTitle": "TV Show 2"
-  },
-  {
-    "timeSlot": "02:00 - 03:30 PM",
-    "showTitle": "TV Show 3"
-  }
-]
+// program.json
+{
+  "programs": [
+    {
+      "title": "Programme TV",
+      "description": "Description du programme télévisé",
+      "time": "14:00 - 15:30"
+    },
+    {
+      "title": "Autre Programme",
+      "description": "Description de l'autre programme télévisé",
+      "time": "16:00 - 17:30"
+    }
+  ]
+}
