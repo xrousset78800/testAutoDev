@@ -1,47 +1,9 @@
-<!-- index.html -->
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programme TV</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        
-        .program-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .program-item {
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-    </style>
+	<title>Hello World</title>
 </head>
 <body>
-    <h1>Programme TV de la journée</h1>
-    
-    <!-- Programme container -->
-    <div class="program-container">
-        <!-- Load program data from API or database -->
-        {% for program in programs %}
-            <div class="program-item">
-                {{ program.title }}
-                {{ program.description }}
-                {{ program.time }}
-            </div>
-        {% endfor %}
-        
-        <!-- Comment section -->
-        <script src="comments.js"></script>
-    </div>
+	<h1>Hello World!</h1>
 </body>
 </html>
