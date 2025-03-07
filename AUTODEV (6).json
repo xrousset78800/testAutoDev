@@ -1,0 +1,2066 @@
+{
+  "name": "AUTODEV",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## DESCRIPTION",
+        "height": 300,
+        "width": 260
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2660,
+        -900
+      ],
+      "typeVersion": 1,
+      "id": "44edc37c-1094-4d54-ac33-021c31c1252d",
+      "name": "Sticky Note - Initialisation"
+    },
+    {
+      "parameters": {
+        "authentication": "gitPassword",
+        "operation": "clone",
+        "repositoryPath": "={{ $('REPOUSER + REPONAME + PATH +').first().json.localPath }}",
+        "sourceRepository": "https://github.com/xrousset78800/testAutoDev.git"
+      },
+      "type": "n8n-nodes-base.git",
+      "typeVersion": 1,
+      "position": [
+        -1880,
+        -1140
+      ],
+      "id": "9a9ead85-76ff-4cc2-bbca-237bc06698e9",
+      "name": "Git Clone",
+      "credentials": {
+        "gitPassword": {
+          "id": "cojbDwNFgo6ddLVj",
+          "name": "Git account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "content": "## DEV",
+        "height": 460,
+        "width": 1300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2040,
+        -840
+      ],
+      "typeVersion": 1,
+      "id": "88ead55d-3243-4a4e-8c15-238d9cff5d1b",
+      "name": "Sticky Note - Préparation des données"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=IMPORTANT : Ton format de sortie est du json brut DANS UN BLOC CODE avec la liste des fichiers impactés par cette tache : \"{{ $('DESCRIPTION PROJET + DEMANDE').item.json.demande }}\"\n\nVoici les fichiers/dossiers existants : \"{{ $('Liste des fichiers Git').item.json.stdout || \"Aucun\"}}\"\n\n\nProjectName = {{ $('DESCRIPTION PROJET + DEMANDE').item.json.nom }}\n\nATTENTION : RESPECTER LE FORMAT DE SORTIE CI DESSOUS\n  [{\n  \"action\": \"create or update or delete\",\n  \"name\": \"filename.ext\",\n  \"path\": \"ProjectName/filename.ext\",\n  \"actionDescription\": \"a small brief about task to do with the file\"\n  },\n  ...\n]",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Pour rappel, voici la description du projet global : \n{{ $('DESCRIPTION PROJET + DEMANDE').item.json.contrainte }}\n\nProjectName = {{ $('DESCRIPTION PROJET + DEMANDE').item.json.nom }}\n\nATTENTION : RESPECTER LE FORMAT DE SORTIE CI DESSOUS\n  [{\n  \"action\": \"create or update or delete\",\n  \"name\": \"filename.ext\",\n  \"path\": \"ProjectName/filename.ext\",\n  \"actionDescription\": \"a small brief about task to do with the file\"\n  },\n  ...\n]\n\nTon rôle sera de déterminer quels fichiers devront être create/update/delete selon le modele en renseignant la description de la tache\n\nIMPORTANT : Ton format de sortie est du json brut DANS UN BLOC CODE\n"
+        }
+      },
+      "id": "7f8e3cd6-cee4-45f6-8e2e-d4d5a5c6d976",
+      "name": "AI Agent3",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        -960,
+        -1120
+      ],
+      "typeVersion": 1.6,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "model": "llama3:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        -1020
+      ],
+      "id": "ff2b035e-11cd-4ff4-90a3-c6a72f879cd8",
+      "name": "Ollama Chat Model3",
+      "credentials": {
+        "ollamaApi": {
+          "id": "r8gcH9aHIxx2bvWP",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "edit",
+        "owner": {
+          "__rl": true,
+          "value": "={{ $('REPOUSER + REPONAME + PATH +').first().json.user }}",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "={{ $('REPOUSER + REPONAME + PATH +').first().json.repo }}",
+          "mode": "name"
+        },
+        "filePath": "={{ $json.path }}",
+        "fileContent": "={{ $json.output }}",
+        "commitMessage": "=Modification du fichier - {{ $json.path }}"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        -700,
+        -580
+      ],
+      "id": "22527d3c-fc9e-4e5c-9bcd-42bbcd81c0b1",
+      "name": "GitHub7",
+      "credentials": {
+        "githubApi": {
+          "id": "I6bCwUpaQDcRu4eQ",
+          "name": "GitHub account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "={{ $('REPOUSER + REPONAME + PATH +').first().json.user }}",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "={{ $('REPOUSER + REPONAME + PATH +').first().json.repo}}",
+          "mode": "name"
+        },
+        "filePath": "={{  ($json.path.startsWith('/'))? $json.path.substring(1):$json.path}}",
+        "fileContent": "={{ $json.output }}",
+        "commitMessage": "=Création du fichier - {{ $json.path }} - "
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        -540,
+        -520
+      ],
+      "id": "1215a486-f5c5-4340-b161-c52cb000d198",
+      "name": "GitHub8",
+      "retryOnFail": false,
+      "credentials": {
+        "githubApi": {
+          "id": "I6bCwUpaQDcRu4eQ",
+          "name": "GitHub account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -2900,
+        -1120
+      ],
+      "id": "e64f12c9-07a3-4e8a-869d-2944d6dbde29",
+      "name": "When chat message received",
+      "webhookId": "104493a3-8ef1-4445-b8b3-e08602bdc65c"
+    },
+    {
+      "parameters": {
+        "jsCode": "function convertTextToJson(inputText) {\n  try {\n    // Try to find and extract just the JSON part (array) from the input\n    const jsonRegex = /\\[\\s*{[\\s\\S]*?}\\s*\\]/;\n    const match = inputText.match(jsonRegex);\n    \n    if (!match) {\n      throw new Error(\"No JSON array found in input\");\n    }\n    \n    // Parse the extracted JSON\n    const jsonData = JSON.parse(match[0]);\n    \n    // Process each file entry\n    const files = jsonData.map(item => {\n      // Remove leading slash from path if present\n      let path = item.path;\n      if (path && path.startsWith('/')) {\n        path = path.substring(1);\n      }\n      \n      return {\n        action: item.action,\n        name: item.name,\n        path: path,\n        actionDescription: item.actionDescription\n      };\n    });\n    \n    return { files };\n  } catch (e) {\n    console.log(\"JSON extraction/parsing failed:\", e.message);\n    \n    // Fallback to a more lenient regex-based approach\n    const fileRegex = /\"action\"\\s*:\\s*\"([^\"]+)\"\\s*,\\s*\"name\"\\s*:\\s*\"([^\"]+)\"\\s*,\\s*\"path\"\\s*:\\s*\"([^\"]+)\"\\s*,\\s*\"actionDescription\"\\s*:\\s*\"([^\"]+)\"/g;\n    \n    const files = [];\n    let match;\n    while ((match = fileRegex.exec(inputText)) !== null) {\n      let path = match[3];\n      if (path.startsWith('/')) {\n        path = path.substring(1);\n      }\n      \n      files.push({\n        action: match[1],\n        name: match[2],\n        path: path,\n        actionDescription: match[4]\n      });\n    }\n    \n    return { files };\n  }\n}\n\nreturn convertTextToJson($input.first().json.output);"
+      },
+      "name": "Extraction de liste de fichiers",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -480,
+        -1120
+      ],
+      "id": "4cc8fc93-1731-476f-a23f-550e31061f93",
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "content": "## Structure + actions + CHECK de l'existant (todo)",
+        "height": 480,
+        "width": 2120
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2020,
+        -1340
+      ],
+      "typeVersion": 1,
+      "id": "56ca98ed-4907-4282-ba65-7d08b9b308a3",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b38463ab-2990-444d-a84d-0f2baeb5eee2",
+              "name": "user",
+              "value": "xrousset78800",
+              "type": "string"
+            },
+            {
+              "id": "b409d223-e6f5-41a8-801e-33ed114a1c2f",
+              "name": "repo",
+              "value": "testAutoDev",
+              "type": "string"
+            },
+            {
+              "id": "390213a7-6b33-46d0-861d-01f26109f34b",
+              "name": "localPath",
+              "value": "/tmp/autoDev",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2580,
+        -1120
+      ],
+      "id": "e76f96c2-b8b4-4891-a833-d934d2da1e87",
+      "name": "REPOUSER + REPONAME + PATH +"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e03f7801-6bb5-4267-930c-4627d688dc8c",
+              "name": "contrainte",
+              "value": "- Base de donnée clients (nom / prenom / telephone mobile / email) - interface de creation de publication, type vente privée ou vente en cours - choix de photos et videos, renseignement de description et prix - soumettre le formulaire pour creer un permalien - envoyer le permalien via whatsapp au client - pour approfondir, ajouter de outils de tracking - une interface simple de gestion des admins, publications etc ...",
+              "type": "string"
+            },
+            {
+              "id": "d4c28468-19f0-4f71-a53a-4e3e3776c271",
+              "name": "=demande",
+              "value": "={{ $('When chat message received').item.json.chatInput  }}",
+              "type": "string"
+            },
+            {
+              "id": "91590576-2fbc-4954-b5c3-ea0c500771b1",
+              "name": "nom",
+              "value": "moctus",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2580,
+        -800
+      ],
+      "id": "4bc04746-bed6-4c7d-9263-01c1b8cad090",
+      "name": "DESCRIPTION PROJET + DEMANDE"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "localRepoPath",
+              "value": "={{ $json.localPath }}"
+            },
+            {
+              "name": "remoteBasePath",
+              "value": "/www/autoDev"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Configuration FTP",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -2900,
+        -800
+      ],
+      "id": "7366141f-07b9-441b-94e0-b824c86ecbfb"
+    },
+    {
+      "parameters": {
+        "content": "## Chat trigger",
+        "height": 260,
+        "width": 280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2960,
+        -1200
+      ],
+      "typeVersion": 1,
+      "id": "81f6760f-3faf-4157-855b-d3b38d76ebc8",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "# - TODO?\n\n# - Validtion \n# - http get + console pour vérif \n# - Erreur sur les structures de fichier\n# - Analyse pour amélioration ? via le chat ?  \n# - amélioration workflow GITHUB\n# - README \n# - Logs ",
+        "height": 500,
+        "width": 960
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -480,
+        -1860
+      ],
+      "typeVersion": 1,
+      "id": "90f625a0-a001-4dea-a97e-ed394d243597",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## GITHUB + LOCALPATH\n",
+        "height": 280,
+        "width": 280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2640,
+        -1220
+      ],
+      "typeVersion": 1,
+      "id": "c1582f91-5b3f-4682-91cf-a4e477d25dfa",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "# FTP",
+        "height": 280,
+        "width": 280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2960,
+        -880
+      ],
+      "typeVersion": 1,
+      "id": "3b1a9bdb-0f64-4b10-ac9f-527abceb1b76",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "054a06ee-43cb-4770-b862-902149d2f33f",
+              "leftValue": "={{ $json.action }}",
+              "rightValue": "delete",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1800,
+        -800
+      ],
+      "id": "479e1b57-d06d-444d-ab6a-8aae03afc86e",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "delete",
+        "owner": {
+          "__rl": true,
+          "value": "={{ $('REPOUSER + REPONAME + PATH +').first().json.user }}",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "={{ $('REPOUSER + REPONAME + PATH +').first().json.repo}}",
+          "mode": "name"
+        },
+        "filePath": "={{ $json.path }}",
+        "commitMessage": "=Suppression du fichier >> {{ $json.path }}"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        -700,
+        -780
+      ],
+      "id": "f604e644-e573-4d3c-9f1a-8648d7c805c5",
+      "name": "GitHub2",
+      "credentials": {
+        "githubApi": {
+          "id": "I6bCwUpaQDcRu4eQ",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# GITHUB > (Bof)",
+        "height": 440,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -720,
+        -840
+      ],
+      "typeVersion": 1,
+      "id": "7bf66d3e-e862-4d41-be65-3e85237f1c24",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "392eb15f-bd3e-44bb-9220-a470c5f1e91b",
+              "name": "name",
+              "value": "={{ $('If1').item.json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "0497b19b-5cc3-4631-9b80-ebe1314bba0b",
+              "name": "output",
+              "value": "={{ $json.codeBlocks }}",
+              "type": "string"
+            },
+            {
+              "id": "cf1b81fc-f680-4668-838b-968d1788311a",
+              "name": "path",
+              "value": "={{ $('If1').item.json.path.replaceAll('\"', '').replaceAll('./', ''); }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -900,
+        -660
+      ],
+      "id": "8941d173-ccf6-4e8b-9934-1953e2c0a41a",
+      "name": "Edit Fields",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "={{ $('REPOUSER + REPONAME + PATH +').first().json.user }}",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "={{ $('REPOUSER + REPONAME + PATH +').first().json.repo }}",
+          "mode": "name"
+        },
+        "filePath": "={{ $('DESCRIPTION PROJET + DEMANDE').first().json.nom }}",
+        "asBinaryProperty": false,
+        "additionalParameters": {}
+      },
+      "name": "Lister Fichiers",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        -1920,
+        -1520
+      ],
+      "id": "c1fca517-8568-4c10-9d76-e1edc591cfd2",
+      "alwaysOutputData": false,
+      "credentials": {
+        "githubApi": {
+          "id": "I6bCwUpaQDcRu4eQ",
+          "name": "GitHub account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "path",
+              "value": "={{ $json.path }}"
+            },
+            {
+              "name": "sha",
+              "value": "={{ $json.sha }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Ne garder que path et sha",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -1360,
+        -1640
+      ],
+      "id": "0bcb92fa-70cf-4af0-b5f4-ebd8b48c41e7"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "delete",
+        "owner": {
+          "__rl": true,
+          "value": "={{ $('REPOUSER + REPONAME + PATH +').first().json.user }}",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "={{ $('REPOUSER + REPONAME + PATH +').first().json.repo }}",
+          "mode": "name"
+        },
+        "filePath": "={{ $json.path }}",
+        "commitMessage": "hard reset"
+      },
+      "name": "Supprimer Fichier",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        -1140,
+        -1660
+      ],
+      "id": "f1b628a1-11bc-41ea-9eaa-778c4c724340",
+      "credentials": {
+        "githubApi": {
+          "id": "I6bCwUpaQDcRu4eQ",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# TYPE \"reset\" >> vide \"repo/projet\"",
+        "height": 340,
+        "width": 1520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2020,
+        -1700
+      ],
+      "typeVersion": 1,
+      "id": "90f4d9b4-ffd3-4ab9-b29b-132b09504179",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "list",
+        "owner": {
+          "__rl": true,
+          "value": "={{ $('REPOUSER + REPONAME + PATH +').first().json.user }}",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "={{ $('REPOUSER + REPONAME + PATH +').first().json.repo }}",
+          "mode": "name"
+        },
+        "filePath": "={{ $json.path }}"
+      },
+      "name": "Lister Fichiers1",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        -1480,
+        -1460
+      ],
+      "id": "c6d630cc-13c3-4a1f-a195-a339d8d55daa",
+      "credentials": {
+        "githubApi": {
+          "id": "I6bCwUpaQDcRu4eQ",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "48fe4ddc-4031-4f53-a652-c00e752c137b",
+              "leftValue": "={{ $json.type }}",
+              "rightValue": "file",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1680,
+        -1580
+      ],
+      "id": "0cc0ec9a-fa65-4006-bd9a-eaeeb9f222be",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c794b99f-9a7d-4419-b863-679fa7c04d9b",
+              "leftValue": "={{ $json.files }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -160,
+        -1120
+      ],
+      "id": "d0fd0d58-5d29-4105-8e2f-a83b6ae6bfc7",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "files",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -2060,
+        -720
+      ],
+      "id": "bb964a3b-0fef-4968-8c7c-8e9ccbaf4891",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6256665d-4cef-40f5-9cd0-a86e96f21eb5",
+              "name": "message",
+              "value": "Reset done !",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -940,
+        -1520
+      ],
+      "id": "4f3903f1-0fe5-417a-a40c-a0ba2d443b70",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b58b4317-06a3-4b9c-b9b6-e423a8f81aed",
+              "name": "loop",
+              "value": "={{ $itemIndex }}",
+              "type": "number"
+            },
+            {
+              "id": "1fefbde7-e3d5-4113-9bcf-17fedf516bad",
+              "name": "action",
+              "value": "={{ $json.action }}",
+              "type": "string"
+            },
+            {
+              "id": "6e9551fc-c485-4807-8fba-00c588423fbe",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "a4b9cfd6-0fa2-4f03-9e7c-ce0d03d4a18b",
+              "name": "actionDescription",
+              "value": "={{ $json.actionDescription }}",
+              "type": "string"
+            },
+            {
+              "id": "be61f335-f716-4977-b136-986e426ec264",
+              "name": "path",
+              "value": "={{ $json.path }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1940,
+        -720
+      ],
+      "id": "e23a6ace-2156-462d-9cc5-276d877d65aa",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "content": "## VALIDATOR TODO",
+        "height": 440,
+        "width": 1400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -140,
+        -840
+      ],
+      "typeVersion": 1,
+      "id": "6af93538-464a-4d69-a650-dfe56548199f",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $itemIndex }}",
+              "value2": "={{ $input.all().length - 1}}"
+            }
+          ]
+        }
+      },
+      "name": "Check Last Item",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        -580
+      ],
+      "id": "1a710186-6db4-4eae-b839-f978bc5ea79e",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "path": "={{ $('Configuration FTP').first().json.remoteBasePath }}/{{ ($json.content.path.startsWith('/'))? $json.content.path.substring(1):$json.content.path }}",
+        "binaryData": false,
+        "fileContent": "={{ $('Edit Fields').item.json.output }}"
+      },
+      "name": "FTP Upload",
+      "type": "n8n-nodes-base.ftp",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        -580
+      ],
+      "id": "6264ad58-9ccb-40ca-b8e6-3273c41580d8",
+      "credentials": {
+        "ftp": {
+          "id": "HxBZ20PPJhWwsPu7",
+          "name": "FTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## DEPLOY (Bof)",
+        "height": 440
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -400,
+        -840
+      ],
+      "typeVersion": 1,
+      "id": "c5596b5f-7659-403d-b63d-f4a752d62ebb",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# todo (a vérifier)\n## SI modification on donne le contenu du fichier en base64 pour le moment",
+        "height": 180,
+        "width": 460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2020,
+        -520
+      ],
+      "typeVersion": 1,
+      "id": "4b6a335e-d52e-4741-a9b5-4df9ec9871a8",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "={{ $('REPOUSER + REPONAME + PATH +').first().json.user }}",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "={{ $('REPOUSER + REPONAME + PATH +').first().json.repo }}",
+          "mode": "name"
+        },
+        "filePath": "={{ $('If1').item.json.path }}",
+        "asBinaryProperty": false,
+        "additionalParameters": {}
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [
+        -1560,
+        -660
+      ],
+      "id": "42d785c7-bdcc-4e0a-b546-52319f6bf253",
+      "name": "GitHub3",
+      "credentials": {
+        "githubApi": {
+          "id": "I6bCwUpaQDcRu4eQ",
+          "name": "GitHub account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "path": "={{ $('Configuration FTP').first().json.remoteBasePath }}/{{ ($('If1').item.json.path.startsWith('/'))? $('If1').item.json.path.substring(1):$('If1').item.json.path }}",
+        "options": {}
+      },
+      "name": "FTP Upload1",
+      "type": "n8n-nodes-base.ftp",
+      "typeVersion": 1,
+      "position": [
+        -340,
+        -780
+      ],
+      "id": "7ff68b94-9eab-460a-a735-fbc0fe1538b9",
+      "credentials": {
+        "ftp": {
+          "id": "HxBZ20PPJhWwsPu7",
+          "name": "FTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama3:latest",
+        "options": {
+          "temperature": 0.2,
+          "topK": -1,
+          "topP": 0.9,
+          "frequencyPenalty": 0.2,
+          "numPredict": 8192,
+          "presencePenalty": 0.1,
+          "repeatPenalty": 1.15
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        -1420,
+        -640
+      ],
+      "id": "5f0b49f1-1115-441b-9e2e-f284b7a6a695",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "r8gcH9aHIxx2bvWP",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Voici la tache en cours demadée : {{ $('DESCRIPTION PROJET + DEMANDE').first().json.contrainte }}\n\nTon unique rôle est de me fournir le fichier {{ $json.name || $('If1').item.json.name }} \nVoici son contenu actuel en base64 : {{ $json.content || \"Fichier vide\" }} \n\nVoici la descrption de l'action demandée : {{ $('If1').item.json.actionDescription }}\n----\nAttention au nom de fichier dans le html (racine : \\. avant le nom des fichiers) à un seul joueur pour le moment. \n----",
+        "options": {
+          "systemMessage": "Tu dois absolument te contenter de n'écrire que du code dans un bloc code.\n\nAttention a vérifier plusieurs fois les chemins que tu indique, tout sera déposé à la racine donc \"./file.ext\" sera privilégié pour au moment de générer le fichier html\n\nAttention aussi a conserver au maximum l'existant en cas de modification"
+        }
+      },
+      "id": "eef2bb70-060a-4b25-aec0-0f8f42780005",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        -1400,
+        -740
+      ],
+      "typeVersion": 1.6,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').first().json.sessionId }}",
+        "contextWindowLength": "={{ $('Split Out').all().length * 2}}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1300,
+        -580
+      ],
+      "id": "9f9d024f-9c8d-4133-8b1d-032976e40a77",
+      "name": "Window Buffer Memory2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Traiter tous les tableaux d'entrée\nconst items = $input.all();\nconst results = [];\n\n// Parcourir tous les items reçus\nfor (const item of items) {\n  const responseContent = item.json.output || '';\n  \n  // Extraire le contenu du bloc de code (délimité par ```)\n  const codeBlockRegex = /```(?:\\w+\\n)?([\\s\\S]*?)```/;\n  const match = responseContent.match(codeBlockRegex);\n  \n  let codeContent = '';\n  if (match && match[1]) {\n    codeContent = match[1].trim();\n  }\n  \n  results.push({\n    json: {\n      codeBlocks: codeContent\n    }\n  });\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1080,
+        -740
+      ],
+      "id": "c5586a23-7ae5-467e-95f8-5fa7435c3927",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7c613985-9da6-4104-b70a-28aa84c145a2",
+              "name": "isNewProject",
+              "value": "={{ $json.currentFiles.length  === 0}}",
+              "type": "boolean"
+            },
+            {
+              "id": "07fd7719-ed6c-4e4e-ac44-93c11631af9d",
+              "name": "currentFiles",
+              "value": "={{ $json.output }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1240,
+        -1120
+      ],
+      "id": "2a97f4b1-131b-45ba-a6d7-e654aeeb3787",
+      "name": "IsNewProject"
+    },
+    {
+      "parameters": {
+        "content": "## 1. nom du projet\n## 2. github user + repo + ftp\n## 3. Remplir description\n## 4. Demander l'initialisation au chat\n## 5. \"reset\" pour supprimer le sous projet dans le repo + ftp\n## 6. utiliser le chat pour les correctifs",
+        "height": 320,
+        "width": 620
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2940,
+        -1580
+      ],
+      "typeVersion": 1,
+      "id": "1fe5aab5-0661-4223-8ed9-01b8a4b1de26",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "# integrations : \n\n# - github\n# - llama\n# - ftp",
+        "height": 300,
+        "width": 280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3280,
+        -1560
+      ],
+      "typeVersion": 1,
+      "id": "4ca4b3bc-344b-44e4-b39d-f995b7c6c0aa",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "path": "={{ $('Configuration FTP').first().json.remoteBasePath }}/{{ $('DESCRIPTION PROJET + DEMANDE').first().json.nom }}",
+        "options": {
+          "folder": true,
+          "recursive": true
+        }
+      },
+      "name": "FTP Upload2",
+      "type": "n8n-nodes-base.ftp",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        -1520
+      ],
+      "id": "7512a506-7458-4320-ad6d-9e08f2346b20",
+      "credentials": {
+        "ftp": {
+          "id": "HxBZ20PPJhWwsPu7",
+          "name": "FTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# 'init', 'reset' ou commande",
+        "width": 260
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3280,
+        -1200
+      ],
+      "typeVersion": 1,
+      "id": "a6b3947c-dfac-41fe-bdaf-6e6830c1853b",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "472cbd59-cb6e-4d3b-9e41-20eb4eb98dc2",
+              "leftValue": "={{ $json.demande }}",
+              "rightValue": "reset",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2300,
+        -1500
+      ],
+      "id": "e1408097-1368-4600-9a86-de5216cd8121",
+      "name": "RESET ?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "472cbd59-cb6e-4d3b-9e41-20eb4eb98dc2",
+              "leftValue": "={{ $json.demande }}",
+              "rightValue": "init",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2160,
+        -1300
+      ],
+      "id": "ec67d311-f1e8-4dcd-a00e-be05d3f03848",
+      "name": "INIT ? (or query)"
+    },
+    {
+      "parameters": {
+        "url": "=https://xouindaplace.fr/autoDev/{{ $('DESCRIPTION PROJET + DEMANDE').item.json.nom }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        420,
+        -640
+      ],
+      "id": "5f2eec80-0ccd-4443-8a22-4265b770edc9",
+      "name": "HTTP Request1",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "5587059239",
+        "text": "STEP !",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        40,
+        -740
+      ],
+      "id": "b86346a1-27fd-465e-b475-f064ec9b90f0",
+      "name": "Telegram",
+      "webhookId": "337cd595-5d22-4b63-b2d0-913e4a39004c",
+      "credentials": {
+        "telegramApi": {
+          "id": "bxT2WNNjIjNOGcUU",
+          "name": "Telegram account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ae052b1a-d8e5-4759-91aa-6c54b1a820d7",
+              "leftValue": "1",
+              "rightValue": "0",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        -780
+      ],
+      "id": "465b3a20-11c5-4866-8a45-be061457f95b",
+      "name": "FALSE"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Voici la description du projet à réaliser : \n{{ $('DESCRIPTION PROJET + DEMANDE').item.json.contrainte }}\n\nFournir la liste des fichiers nécessaires au projet. \nATTENTION : RESPECTER LE FORMAT DE SORTIE CI DESSOUS\n  {\n  \"action\": \"create\",\n  \"name\": \"filename\",\n  \"path\": \"dailytv/filename\",\n  \"actionDescription\": \"a small brief about task to do with the file\"\n  },\n\nIMPORTANT: Ton format de sortie est du json brut DANS UN BLOC CODE",
+        "options": {
+          "systemMessage": "=Pour rappel, voici la description du projet global : \n{{ $('DESCRIPTION PROJET + DEMANDE').item.json.contrainte }}\n\nATTENTION : RESPECTER LE FORMAT DE SORTIE CI DESSOUS\n  {\n  \"action\": \"create\",\n  \"name\": \"filename\",\n  \"path\": \"dailytv/filename\",\n  \"actionDescription\": \"a small brief about task to do with the file\"\n  },\n\nTon rôle sera de déterminer quels fichiers devront être create/update/delete selon le modele en renseignant la description de la tache\n\nIMPORTANT: Ton format de sortie est du json brut DANS UN BLOC CODE\n\nProjectName = {{ $('DESCRIPTION PROJET + DEMANDE').item.json.nom }}"
+        }
+      },
+      "id": "5a1a099f-dbf4-4119-a73c-1e3e6137415e",
+      "name": "AI Agent4",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        -1140,
+        -1300
+      ],
+      "typeVersion": 1.6,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "model": "llama3:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        -1160,
+        -1200
+      ],
+      "id": "f1340bd3-0c7d-4dbf-8996-50a4f2fb44df",
+      "name": "Ollama Chat Model1",
+      "credentials": {
+        "ollamaApi": {
+          "id": "r8gcH9aHIxx2bvWP",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "function convertTextToJson(inputText) {\n  try {\n    // Try to find and extract just the JSON part (array) from the input\n    const jsonRegex = /\\[\\s*{[\\s\\S]*?}\\s*\\]/;\n    const match = inputText.match(jsonRegex);\n    \n    if (!match) {\n      throw new Error(\"No JSON array found in input\");\n    }\n    \n    // Parse the extracted JSON\n    const jsonData = JSON.parse(match[0]);\n    \n    // Process each file entry\n    const files = jsonData.map(item => {\n      // Remove leading slash from path if present\n      let path = item.path;\n      if (path && path.startsWith('/')) {\n        path = path.substring(1);\n      }\n      \n      return {\n        action: item.action,\n        name: item.name,\n        path: path,\n        actionDescription: item.actionDescription\n      };\n    });\n    \n    return { files };\n  } catch (e) {\n    console.log(\"JSON extraction/parsing failed:\", e.message);\n    \n    // Fallback to a more lenient regex-based approach\n    const fileRegex = /\"action\"\\s*:\\s*\"([^\"]+)\"\\s*,\\s*\"name\"\\s*:\\s*\"([^\"]+)\"\\s*,\\s*\"path\"\\s*:\\s*\"([^\"]+)\"\\s*,\\s*\"actionDescription\"\\s*:\\s*\"([^\"]+)\"/g;\n    \n    const files = [];\n    let match;\n    while ((match = fileRegex.exec(inputText)) !== null) {\n      let path = match[3];\n      if (path.startsWith('/')) {\n        path = path.substring(1);\n      }\n      \n      files.push({\n        action: match[1],\n        name: match[2],\n        path: path,\n        actionDescription: match[4]\n      });\n    }\n    \n    return { files };\n  }\n}\n\nreturn convertTextToJson($input.first().json.output);"
+      },
+      "name": "Extraction de liste de fichiers1",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -720,
+        -1300
+      ],
+      "id": "c4843fe9-d471-4398-94a0-dbaf6f0026bb",
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c794b99f-9a7d-4419-b863-679fa7c04d9b",
+              "leftValue": "={{ $json.files }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -500,
+        -1300
+      ],
+      "id": "05193262-2743-4348-8dd0-c21362ac0eb0",
+      "name": "If6"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "054a06ee-43cb-4770-b862-902149d2f33f",
+              "leftValue": "={{ $json.action }}",
+              "rightValue": "create",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1680,
+        -720
+      ],
+      "id": "ee9909a3-9b6d-4657-bff2-016d26fe1ebe",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c794b99f-9a7d-4419-b863-679fa7c04d9b",
+              "leftValue": "={{ $json.codeBlocks }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1040,
+        -500
+      ],
+      "id": "59a77a1b-d692-44bc-ada9-84928a5e1c0d",
+      "name": "If7"
+    },
+    {
+      "parameters": {
+        "operation": "pull",
+        "repositoryPath": "={{ $('REPOUSER + REPONAME + PATH +').first().json.localPath }}"
+      },
+      "type": "n8n-nodes-base.git",
+      "typeVersion": 1,
+      "position": [
+        -1720,
+        -1080
+      ],
+      "id": "448dbe50-b59d-4d85-ae64-4bf0916e8434",
+      "name": "Git"
+    },
+    {
+      "parameters": {
+        "executeOnce": false,
+        "command": "=cd {{ $('Configuration FTP').first().json.localRepoPath }}/{{ $('DESCRIPTION PROJET + DEMANDE').first().json.nom }} && {{ 'find . -not -path \"*/\\.git/*\" | sort' }}"
+      },
+      "name": "Liste des fichiers Git",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -1520,
+        -1140
+      ],
+      "id": "fe338eea-3600-4cc3-8f95-d1139773b459"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Voici le status code sur la home : \"{{ $json.statusCode }}\"\nVoici les header : \"{{ $json.httpConsole }}\"\nVoici les statut : \"{{ $json.httpError }}\"\nVoici le contenu http de la home : \"{{ $json.httpContent }}\"",
+        "options": {
+          "systemMessage": "Ton rôle est de vérifier qu'une tache ne renvoie pas d'erreur"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        800,
+        -640
+      ],
+      "id": "0b1b2b2a-2250-40dc-98f4-6db4d184876e",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c3422bbb-ebc8-4aa9-9736-9a3020327411",
+              "name": "httpContent",
+              "value": "={{ $('HTTP Request1').item.json.data }}",
+              "type": "string"
+            },
+            {
+              "id": "99b8e7ab-2472-42ab-9ce9-76e1ad64bb85",
+              "name": "httpError",
+              "value": "={{ $('HTTP Request1').item.json.statusMessage }}",
+              "type": "string"
+            },
+            {
+              "id": "4e4125c1-f51d-429e-a372-febeb0095b6a",
+              "name": "httpConsole",
+              "value": "={{ $('HTTP Request1').item.json.headers }}",
+              "type": "string"
+            },
+            {
+              "id": "5efe0db5-d735-471b-8f59-8b5c9e3930b3",
+              "name": "statusCode",
+              "value": "={{ $('HTTP Request1').item.json.statusCode }}",
+              "type": "number"
+            },
+            {
+              "id": "07fd7719-ed6c-4e4e-ac44-93c11631af9d",
+              "name": "currentFiles",
+              "value": "={{ $json.output }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        600,
+        -640
+      ],
+      "id": "d57fd826-cbb5-44fd-b3f2-bed22fd9522c",
+      "name": "HTTP+console"
+    },
+    {
+      "parameters": {
+        "model": "llama3:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        800,
+        -460
+      ],
+      "id": "433c8738-f639-4843-9909-c3d3387027be",
+      "name": "Ollama Chat Model2",
+      "credentials": {
+        "ollamaApi": {
+          "id": "r8gcH9aHIxx2bvWP",
+          "name": "Ollama account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Git Clone": {
+      "main": [
+        [
+          {
+            "node": "Liste des fichiers Git",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Git",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "Extraction de liste de fichiers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub7": {
+      "main": [
+        [
+          {
+            "node": "FTP Upload",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "GitHub8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub8": {
+      "main": [
+        [
+          {
+            "node": "FTP Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "REPOUSER + REPONAME + PATH +",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraction de liste de fichiers": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "REPOUSER + REPONAME + PATH +": {
+      "main": [
+        [
+          {
+            "node": "Configuration FTP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DESCRIPTION PROJET + DEMANDE": {
+      "main": [
+        [
+          {
+            "node": "RESET ?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configuration FTP": {
+      "main": [
+        [
+          {
+            "node": "DESCRIPTION PROJET + DEMANDE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "GitHub2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub2": {
+      "main": [
+        [
+          {
+            "node": "FTP Upload1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "GitHub7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lister Fichiers": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ne garder que path et sha": {
+      "main": [
+        [
+          {
+            "node": "Supprimer Fichier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lister Fichiers1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Ne garder que path et sha",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Lister Fichiers1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supprimer Fichier": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Last Item": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FTP Upload": {
+      "main": [
+        [
+          {
+            "node": "Check Last Item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "If7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IsNewProject": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "FTP Upload2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RESET ?": {
+      "main": [
+        [
+          {
+            "node": "Lister Fichiers",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "INIT ? (or query)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "INIT ? (or query)": {
+      "main": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Git Clone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "HTTP+console",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram": {
+      "main": [
+        [
+          {
+            "node": "FALSE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FALSE": {
+      "main": [
+        [],
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent4": {
+      "main": [
+        [
+          {
+            "node": "Extraction de liste de fichiers1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraction de liste de fichiers1": {
+      "main": [
+        [
+          {
+            "node": "If6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If6": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "GitHub3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If7": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Git": {
+      "main": [
+        [
+          {
+            "node": "Liste des fichiers Git",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Liste des fichiers Git": {
+      "main": [
+        [
+          {
+            "node": "IsNewProject",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP+console": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "45f34201-9b4e-42ab-aa4f-7ffde4f2cd28",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a34520e9e671b53b5c3fa9a39d7075c2c9b6d7acb2cf78851656918054ca0f67"
+  },
+  "id": "LFwNLaEUA7uQn3AQ",
+  "tags": []
+}
