@@ -1,0 +1,256 @@
+{
+  "name": "telegram",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{$node[\"TELEGRAM Bot Token\"].json[\"botToken\"]}}/getUpdates",
+        "options": {},
+        "queryParametersUi": {
+          "parameter": [
+            {
+              "name": "timeout",
+              "value": "=15"
+            },
+            {
+              "name": "allowed_updates",
+              "value": "message"
+            }
+          ]
+        }
+      },
+      "id": "9237e68f-cd55-4eac-8c24-26b2e23e6575",
+      "name": "Get Updates",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -660,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraire les messages\nconst response = $input.item.json;\n\n// Si pas de résultats ou erreur, retourner\nif (!response.ok || !response.result || response.result.length === 0) {\n  return {updates: []};\n}\n  \n// Identifier le dernier update_id pour l'offset\nlet lastUpdateId = 0;\n  response.result.forEach(update => {\n    if (update.update_id > lastUpdateId) {\n      lastUpdateId = update.update_id;\n    }\n  });\n\n  // Mettre à jour l'offset pour la prochaine requête\\nif (lastUpdateId > 0) {\n  // Stockez le dernier ID + 1 pour la prochaine exécution\n  return { updates: response.result };"
+      },
+      "id": "ad21985b-a701-4010-8a23-b22e9f72e95e",
+      "name": "Traitement Updates",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Récupération des données du message\n\nlet size = $json.updates.length-1;\nconst message = $json.updates[size].message.text || \"\";\nconst chatId = $json.updates[size].message.chat.id;\nconst firstName = $json.updates[size].message.from.first_name || \"Utilisateur\";\n\nconst lastId = $json.updates[size].update_id;\nif(lastId === $json.lastId || null === $json.lastId){\n  return {};\n}\n// Traitement des commandes\nlet reponse = \"\";\n\nif (message.startsWith(\"/start\")) {\n  reponse = `Bonjour ${firstName}! Je suis votre assistant bot. Comment puis-je vous aider aujourd'hui?`;\n} \nelse if (message.startsWith(\"/help\")) {\n  reponse = \"Voici les commandes disponibles:\\n/start - Démarrer la conversation\\n/help - Afficher l'aide\\n/info - À propos de ce bot\";\n} \nelse if (message.startsWith(\"/info\")) {\n  reponse = \"Je suis un bot Telegram créé avec n8n en utilisant des requêtes HTTP directes.\\n\\nCe bot a été configuré sans webhook, ce qui le rend idéal pour les environnements de développement locaux.\";\n} \nelse if (message.startsWith(\"/init\")) {\n  reponse = \"Initialisation du projet\";\n}\nelse if (message.startsWith(\"/reset\")) {\n  reponse = \"Suppression du projet dans le repo + ftp\";\n}\nelse {\n  // Réponse par défaut (écho)\n  reponse = `Vous avez dit: \"${message}\"\\n\\n\n  <a href=\"https://xouindaplace.fr/autoDev/moctus/\">Site</a>\\n\\n\\n\\n Pour voir la liste des commandes disponibles, tapez /help`;\n}\n\n// Retourner les données pour le nœud suivant\nreturn {\n  chatId: chatId,\n  message: reponse,\n  lastId: lastId\n};"
+      },
+      "id": "68cf78a4-b147-4030-aaef-1ff802ded7f8",
+      "name": "Préparer Réponse",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{$node[\"TELEGRAM Bot Token\"].json[\"botToken\"]}}/sendMessage",
+        "options": {},
+        "queryParametersUi": {
+          "parameter": [
+            {
+              "name": "text",
+              "value": "={{ $json.message }}"
+            },
+            {
+              "name": "chat_id",
+              "value": "={{ $json.chatId }}"
+            },
+            {
+              "name": "parse_mode",
+              "value": "HTML"
+            }
+          ]
+        }
+      },
+      "id": "c0cb9121-cc23-44a7-930b-78be5f269d34",
+      "name": "Send Message",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        260,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "custom",
+              "cronExpression": "*/10 * * * * *"
+            }
+          ]
+        }
+      },
+      "id": "9d089a85-b964-45fc-94c4-0c28bdcd9746",
+      "name": "Cron1",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        -1040,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "botToken",
+              "value": "XXXXXXX"
+            },
+            {
+              "name": "lastId",
+              "value": "null"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2212c75d-08ba-437d-aabb-1da115bca6b4",
+      "name": "TELEGRAM Bot Token",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -840,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "lastId",
+              "value": "={{ $json.lastId || null }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "66dd80b7-9b36-4514-813f-98a07600882f",
+      "name": "TELEGRAM Bot Token1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{$node[\"TELEGRAM Bot Token\"].json[\"botToken\"]}}/getUpdates",
+        "options": {},
+        "queryParametersUi": {
+          "parameter": [
+            {
+              "name": "offset",
+              "value": "=999999999"
+            }
+          ]
+        }
+      },
+      "id": "4504c734-ac5b-4dff-bd88-7f84e47ce384",
+      "name": "Get Updates1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        140
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get Updates": {
+      "main": [
+        [
+          {
+            "node": "Traitement Updates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Traitement Updates": {
+      "main": [
+        [
+          {
+            "node": "TELEGRAM Bot Token1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Préparer Réponse": {
+      "main": [
+        [
+          {
+            "node": "Send Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cron1": {
+      "main": [
+        [
+          {
+            "node": "TELEGRAM Bot Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TELEGRAM Bot Token": {
+      "main": [
+        [
+          {
+            "node": "Get Updates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TELEGRAM Bot Token1": {
+      "main": [
+        [
+          {
+            "node": "Préparer Réponse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "472f2959-f06f-4865-bb43-e964d43e18f8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a34520e9e671b53b5c3fa9a39d7075c2c9b6d7acb2cf78851656918054ca0f67"
+  },
+  "id": "78RMQPDaTXJBqOxV",
+  "tags": []
+}
