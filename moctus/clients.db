@@ -1,0 +1,13 @@
+PRAGMA foreign_keys=OFF;
+
+CREATE TABLE clients (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nom TEXT NOT NULL,
+    prenom TEXT NOT NULL,
+    telephone_mobile TEXT NOT NULL,
+    email TEXT NOT NULL
+);
+
+INSERT INTO clients (nom, prenom, telephone_mobile, email) VALUES 
+('John', 'Doe', '+33612345678', 'john.doe@example.com'),
+('Jane', 'Smith', '+33765432100', 'jane.smith@example.com');

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Publish a New Item</title>
+</head>
+<body>
+    <h1>Publish a New Item</h1>
+    <form action="submit" method="post">
+        <label for="type">Publication Type:</label><br />
+        <select id="type" name="type">
+            <option value="private_sale">Private Sale</option>
+            <option value="ongoing_sale">Ongoing Sale</option>
+        </select><br /><br />
+
+        <input type="file" accept=".jpg, .jpeg, .png, .gif" multiple />
+        <label for="description">Description:</label><br />
+        <textarea id="description" name="description"></textarea><br /><br />
+
+        <label for="price">Price:</label><br />
+        <input type="number" id="price" name="price"><br /><br />
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
