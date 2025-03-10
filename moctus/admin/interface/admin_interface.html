@@ -1,3 +1,4 @@
+<!-- admin_interface.html -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,37 +6,28 @@
 </head>
 <body>
 	<h1>Publication Management</h1>
-	<table id="publications-table">
-		<thead>
-			<tr>
-				<th>Publishment ID</th>
-				<th>Type</th>
-				<th>Description</th>
-				<th>Prix</th>
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tbody id="publications-tbody">
-			<!-- populate table with data -->
-		</tbody>
-	</table>
-
-	<h1>Client Management</h1>
-	<table id="clients-table">
+	
+	<form action=create_publication.php method=post>
+		<label for=publication_name>Name:</label><br />
+		<input type=text id=publication_name name=name><br />
+		<label for=description>Description:</label><br />
+		<textarea id=description name=description></textarea><br />
+		<button type=submit>Create Publication</button>
+	</form>
+	
+	<h2>Publications List</h2>
+	
+	<table border=1>
 		<thead>
 			<tr>
 				<th>Name</th>
-				<th>Prenom</th>
-				<th>Phone Number</th>
-				<th>Email</th>
+				<th>Description</th>
 				<th>Action</th>
 			</tr>
 		</thead>
-		<tbody id="clients-tbody">
-			<!-- populate table with data -->
-		</tbody>
+		<tbody id=publications-list></tbody>
 	</table>
-
-	<script src="admin_interface.js"></script>
+	
+	<script src=admin_interface.js></script>
 </body>
 </html>
