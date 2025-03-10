@@ -1,30 +1,24 @@
+<!-- publication_form.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Publication Form</title>
+  <title>Publishment Form</title>
 </head>
 <body>
-    <h2>Publish Your Content</h2>
-    <form action="/publish" method="post">
-        <!-- Existing form fields -->
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title"><br><br>
-        <label for="content">Content:</label>
-        <textarea id="content" name="content"></textarea><br><br>
-
-        <!-- New tracking tools fields -->
-        <h3>Tracking Tools</h3>
-        <label for="tracking-tools">Choose your tracking tool:</label>
-        <select id="tracking-tools" name="tracking_tools">
-            <option value="google-analytics">Google Analytics</option>
-            <option value="facebook-insights">Facebook Insights</option>
-            <option value="twitter- analytics">Twitter Analytics</option>
-        </select><br><br>
-
-        <!-- Submit button -->
-        <input type="submit" value="Publish">
-    </form>
+  <h1>Publish Your Item</h1>
+  <form action=# method=post enctype=multipart/form-data>
+    <label for=type>Type:</label><br />
+    <select id=type name=type>
+      <option value=vente_privee>Private Sale</option>
+      <option value=vente_en_cours>Ongoing Sale</option>
+    </select><br /><br />
+    <input type=file name=photo accept=.jpg, .jpeg, .png><br />
+    <input type=file name=video accept=.mp4, .mov, .avi><br />
+    <label for=description>Description:</label><br />
+    <textarea id=description name=description></textarea><br /><br />
+    <label for=price>Price:</label><br />
+    <input type=number id=price name=price><br /><br />
+    <button type=submit>Submit</button>
+  </form>
 </body>
 </html>

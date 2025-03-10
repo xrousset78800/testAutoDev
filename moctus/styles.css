@@ -1,25 +1,35 @@
+/* styles.css */
 body {
   font-family: Arial, sans-serif;
 }
 
-.header {
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  text-align: center;
+.publication-form {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
 }
 
-.header h1 {
-  font-size: 24px;
+.publication-form h2 {
+  font-weight: bold;
+  margin-top: 10px;
 }
 
-.footer {
-  background-color: #666;
-  color: #fff;
-  padding: 10px;
-  text-align: center;
-}
-
-.footer p {
+.publication-form input[type=file] {
+  display: block;
   margin-bottom: 20px;
+}
+
+.publication-form button[type=submit] {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.publication-form button[type=submit]:hover {
+  background-color: #3e8e41;
 }
