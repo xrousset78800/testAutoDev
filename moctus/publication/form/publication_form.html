@@ -2,23 +2,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Publishment Form</title>
+	<title>Publish Your Item</title>
 </head>
 <body>
-  <h1>Publish Your Item</h1>
-  <form action=# method=post enctype=multipart/form-data>
-    <label for=type>Type:</label><br />
-    <select id=type name=type>
-      <option value=vente_privee>Private Sale</option>
-      <option value=vente_en_cours>Ongoing Sale</option>
-    </select><br /><br />
-    <input type=file name=photo accept=.jpg, .jpeg, .png><br />
-    <input type=file name=video accept=.mp4, .mov, .avi><br />
-    <label for=description>Description:</label><br />
-    <textarea id=description name=description></textarea><br /><br />
-    <label for=price>Price:</label><br />
-    <input type=number id=price name=price><br /><br />
-    <button type=submit>Submit</button>
-  </form>
+	<h1>Publish Your Item</h1>
+
+	<form action=# method=post enctype=multipart/form-data>
+		<label for=publication-type>Type:</label><br />
+		<select id=publication-type name=type>
+			<option value=private-sale>Private Sale</option>
+			<option value=ongoing-auction>Ongoing Auction</option>
+		</select><br />
+
+		<label for=photos-videos>Add Photos and Videos:</label><br />
+		<input type=file id=photos-videos name=photos[] multiple><br />
+
+		<label for=description>Description:</label><br />
+		<textarea id=description name=description></textarea><br />
+
+		<label for=price>Price:</label><br />
+		<input type=number id=price name=price><br />
+
+		<button type=submit>Create Publication</button>
+	</form>
+
+	<script src=js/publication_form.js></script>
 </body>
 </html>
