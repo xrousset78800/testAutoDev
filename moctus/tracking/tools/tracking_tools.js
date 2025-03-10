@@ -1,31 +1,17 @@
-// tracking_tools.js
+// Tracking tools functions
 function trackPublication(publicationId) {
-  // Send request to server to update publication status
-  fetch('/track-publication', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id: publicationId }),
-  });
+  // Code to track publication here
 }
 
-function sendWhatsAppMessage(publicationId, message) {
-  // Use WhatsApp API or a third-party service to send the message
-  fetch('/send-whatsapp-message', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id: publicationId, message }),
-  });
+function getPublicationStats(publicationId) {
+  // Code to retrieve publication stats here
 }
 
-function getPublicationStatus(publicationId) {
-  // Send request to server to retrieve publication status
-  fetch('/get-publication-status', {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-    params: { id: publicationId }
-  })
-  .then(response => response.json())
-  .then(data => console.log(data));
+function sendNotification(to, message) {
+  // Code to send notification here
 }
 
-export { trackPublication, sendWhatsAppMessage, getPublicationStatus };
+// Example usage:
+trackPublication(123);
+getPublicationStats(456);
+sendNotification("john@example.com", "New publication available!");

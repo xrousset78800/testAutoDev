@@ -1,46 +1,19 @@
-const { Worker } = require('worker_threads');
+const express = require('express');
+const app = express();
+const port = 3000;
 
-// Create a new worker thread.
-const worker = new Worker(`
-  // Define a function to handle incoming messages from WhatsApp.
-  async function handleMessage(message) {
-    console.log(`Received message: ${message.body}`);
+app.use(express.json());
 
-    if (!process.env.WHATSAPP_API_TOKEN || !process.env.WHATSAPP_API_PHONE_NUMBER) {
-      return;
-    }
+let clientsDatabase = [];
 
-    try {
-      await pushPublicationOnWhatsApp(message);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+function createPublication(publicationType, photos, videos, description, price) {
+    // Code to create publication here
+}
 
-  // Define a function to push publications on WhatsApp.
-  async function pushPublicationOnWhatsApp(message) {
-    const { permalink, type } = message;
+async function sendNotification(to, message) {
+    // Code to send notification here
+}
 
-    if (!permalink || !type) {
-      return;
-    }
-
-    // Send the publication link via WhatsApp.
-    await sendWhatsAppMessage(permalink);
-  }
-
-  // Define a function to send a WhatsApp message.
-  async function sendWhatsAppMessage(link) {
-    console.log(`Sending WhatsApp message: ${link}`);
-
-    // Implement your own WhatsApp API client here.
-    // For example, you can use the 'whatsapp-web.js' library.
-
-    return;
-  }
-`);
-
-// Start listening for incoming messages from WhatsApp.
-worker.on('message', handleMessage);
-
-module.exports = worker;
+// Example usage:
+createPublication('vente privee', ['photo1.jpg'], [], 'Description de la vente privée', 100);
+sendNotification("john@example.com", "New publication available!");

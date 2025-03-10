@@ -1,31 +1,27 @@
 const express = require('express');
 const app = express();
-const port = 3000;
-const whatsappApi = 'https://api.whatsapp.com/send';
-const whatsappToken = 'YOUR_WHATSAPP_TOKEN';
+app.use(express.json());
 
-app.use(express.static('.'));
+// Base de données clients
+let clients = [
+  { id: 1, name: 'John Doe', phoneNumber: '0123456789', email: 'john.doe@example.com' },
+  // Ajouter d'autres clients ici...
+];
 
-// Function to send a WhatsApp message
-function sendMessage(to, text) {
-  const request = {
-    method: 'POST',
-    url: whatsappApi,
-    headers: { 'Authorization':  },
-    body: JSON.stringify({ to, text }),
-  };
-  return fetch(request.url, request);
-}
-
-// Function to send a permalink via WhatsApp
-app.post('/send-permalink', (req, res) => {
-  const publicationId = req.body.publicationId;
-  const clientPhoneNumber = req.body.clientPhoneNumber;
-
-  // Send the WhatsApp message here using the sendMessage function
-  sendMessage(clientPhoneNumber, );
+// Interface de création de publication
+app.post('/create-publication', (req, res) => {
+  const publication = req.body;
+  console.log(publication);
+  res.send('Publication créée avec succès!');
 });
 
-app.listen(port, () => {
-  console.log();
+// Envoi du permalink via WhatsApp au client
+app.get('/send-whatsapp-message/:id', (req, res) => {
+  const clientId = req.params.id;
+  // Envoyer le message WhatsApp ici...
+  res.send(`Message envoyé à l'utilisateur ${clientId}!`);
 });
+
+// Espace pour améliorer la lisibilité du code
+
+module.exports = app;

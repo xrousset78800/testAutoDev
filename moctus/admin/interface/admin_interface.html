@@ -1,33 +1,72 @@
-<!-- admin_interface.html -->
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Admin Interface</title>
+    <title>Admin Interface</title>
 </head>
 <body>
-	<h1>Publication Management</h1>
-	
-	<form action=create_publication.php method=post>
-		<label for=publication_name>Name:</label><br />
-		<input type=text id=publication_name name=name><br />
-		<label for=description>Description:</label><br />
-		<textarea id=description name=description></textarea><br />
-		<button type=submit>Create Publication</button>
-	</form>
-	
-	<h2>Publications List</h2>
-	
-	<table border=1>
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Description</th>
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tbody id=publications-list></tbody>
-	</table>
-	
-	<script src=admin_interface.js></script>
+    <!-- Admin Dashboard -->
+    <h1>Administration Panel</h1>
+    
+    <!-- Client Management -->
+    <section id="client-management">
+        <h2>Clients:</h2>
+        <ul id="clients-list"></ul>
+        
+        <!-- Add New Client Button -->
+        <button type="button" onclick="showAddClientForm()">+ Add New Client</button>
+        
+        <!-- Form to add a new client (hidden by default) -->
+        <div id="add-client-form">
+            <label for="client-name">Name:</label><br />
+            <input type="text" id="client-name" name="name"><br />
+            <label for="client-phone">Phone Number:</label><br />
+            <input type="tel" id="client-phone" name="phone"><br />
+            <label for="client-email">Email:</label><br />
+            <input type="email" id="client-email" name="email"><br />
+            
+            <!-- Submit Button -->
+            <button type="submit">Add Client</button>
+        </div>
+    </section>
+    
+    <!-- Publication Management -->
+    <section id="publication-management">
+        <h2>Publications:</h2>
+        <ul id="publications-list"></ul>
+        
+        <!-- Add New Publication Button -->
+        <button type="button" onclick="showAddPublicationForm()">+ Add New Publication</button>
+        
+        <!-- Form to add a new publication (hidden by default) -->
+        <div id="add-publication-form">
+            <!-- Type: Private Sale or Ongoing Auction -->
+            <label for="publication-type">Type:</label><br />
+            <input type="radio" name="type" value="private-sale" checked /> Private Sale
+            <input type="radio" name="type" value="ongoing-auction" /> Ongoing Auction<br />
+            
+            <!-- Photo and Video Upload -->
+            <h2>Media</h2>
+            <label for="photo">Photo:</label><br />
+            <input type="file" id="photo" name="photo"><br />
+            <label for="video">Video:</label><br />
+            <input type="file" id="video" name="video"><br />
+            
+            <!-- Description and Price -->
+            <h2>Details</h2>
+            <label for="description">Description:</label><br />
+            <textarea id="description" name="description"></textarea><br />
+            <label for="price">Price:</label><br />
+            <input type="number" id="price" name="price"><br />
+            
+            <!-- Submit Button -->
+            <button type="submit">Add Publication</button>
+        </div>
+    </section>
+    
+    <!-- Tracking and Analytics -->
+    <section id="tracking-and-analytics">
+        <h2>Tracking &amp; Analytics:</h2>
+        <!-- Insert tracking code or analytics here -->
+    </section>
 </body>
 </html>

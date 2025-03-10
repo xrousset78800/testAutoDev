@@ -1,31 +1,41 @@
-<!-- publication_form.html -->
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Publish Your Item</title>
+    <title>Publishment Form</title>
 </head>
 <body>
-	<h1>Publish Your Item</h1>
-
-	<form action=# method=post enctype=multipart/form-data>
-		<label for=publication-type>Type:</label><br />
-		<select id=publication-type name=type>
-			<option value=private-sale>Private Sale</option>
-			<option value=ongoing-auction>Ongoing Auction</option>
-		</select><br />
-
-		<label for=photos-videos>Add Photos and Videos:</label><br />
-		<input type=file id=photos-videos name=photos[] multiple><br />
-
-		<label for=description>Description:</label><br />
-		<textarea id=description name=description></textarea><br />
-
-		<label for=price>Price:</label><br />
-		<input type=number id=price name=price><br />
-
-		<button type=submit>Create Publication</button>
-	</form>
-
-	<script src=js/publication_form.js></script>
+    <h1>Publication Form</h1>
+    <form action="/create-publication" method="post">
+        <label for="type">Type:</label><br />
+        <input type="radio" name="type" value="private-sale" checked /> Private Sale
+        <input type="radio" name="type" value="ongoing-auction" /> Ongoing Auction<br />
+        
+        <!-- Photo and Video Upload -->
+        <h2>Media</h2>
+        <label for="photo">Photo:</label><br />
+        <input type="file" id="photo" name="photo"><br />
+        <label for="video">Video:</label><br />
+        <input type="file" id="video" name="video"><br />
+        
+        <!-- Description and Price -->
+        <h2>Details</h2>
+        <label for="description">Description:</label><br />
+        <textarea id="description" name="description"></textarea><br />
+        <label for="price">Price:</label><br />
+        <input type="number" id="price" name="price"><br />
+        
+        <!-- Submit Button -->
+        <button type="submit">Submit</button>
+    </form>
+    
+    <!-- WhatsApp Message Send Button (hidden by default) -->
+    <div id="whatsapp-message-send">
+        <label for="client-id">Client ID:</label><br />
+        <input type="number" id="client-id" name="clientId"><br />
+        <button type="submit">Send</button>
+    </div>
+    
+    <!-- Tracking Tools (to be added later) -->
+    <!-- Admin Interface (to be added later) -->
 </body>
 </html>

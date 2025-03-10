@@ -1,35 +1,55 @@
-/* styles.css */
 body {
   font-family: Arial, sans-serif;
 }
 
-.publication-form {
-  max-width: 400px;
+#admin-interface {
+  width: 80%;
   margin: 40px auto;
+  background-color: #f0f0f0;
   padding: 20px;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  border: 1px solid #ccc;
+  box-shadow: 0px 2px 4px rgba(0,0,0,.05);
 }
 
-.publication-form h2 {
+#clients-list {
+  list-style-type: none;
+  margin-bottom: 10px;
+}
+
+.client-item {
+  background-color: #f9f9f9;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+}
+
+.client-name {
   font-weight: bold;
-  margin-top: 10px;
 }
 
-.publication-form input[type=file] {
-  display: block;
-  margin-bottom: 20px;
+.publication-list {
+  list-style-type: none;
+  margin-bottom: 10px;
 }
 
-.publication-form button[type=submit] {
-  background-color: #4CAF50;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.publication-item {
+  background-color: #f9f9f9;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
 }
 
-.publication-form button[type=submit]:hover {
-  background-color: #3e8e41;
+.publication-name {
+  font-weight: bold;
+}
+
+#tracking-and-analytics {
+  width: 80%;
+  margin: 40px auto;
+  background-color: #f0f0f0;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 2px 4px rgba(0,0,0,.05);
+}
+
+#tracking-and-analytics h2 {
+  font-weight: bold;
 }
