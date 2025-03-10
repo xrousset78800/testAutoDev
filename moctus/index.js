@@ -1,38 +1,29 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const whatsappApi = 'https://api.whatsapp.com/send';
+const whatsappToken = 'YOUR_WHATSAPP_TOKEN';
 
 app.use(express.static('.'));
 
-// WhatsApp API
-const whatsAppApi = 'https://api.whatsapp.com/send';
-const whatsappToken = 'YOUR_WHATSAPP_TOKEN';
-
-// Function to send a message via WhatsApp
+// Function to send a WhatsApp message
 function sendMessage(to, text) {
   const request = {
     method: 'POST',
-    url: whatsAppApi,
+    url: whatsappApi,
     headers: { 'Authorization':  },
     body: JSON.stringify({ to, text }),
   };
   return fetch(request.url, request);
 }
 
-// Function to track a publication
-function trackPublication(publicationId) {
-  // Send request to server to update publication status
-  fetch('/track-publication', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ publicationId }),
-  });
-}
-
-// Function to send a WhatsApp message when a publication is tracked
-app.post('/track-publication', (req, res) => {
+// Function to send a permalink via WhatsApp
+app.post('/send-permalink', (req, res) => {
   const publicationId = req.body.publicationId;
+  const clientPhoneNumber = req.body.clientPhoneNumber;
+
   // Send the WhatsApp message here using the sendMessage function
+  sendMessage(clientPhoneNumber, );
 });
 
 app.listen(port, () => {
