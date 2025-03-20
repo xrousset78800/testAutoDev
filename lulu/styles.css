@@ -1,40 +1,19 @@
-/* styles.css */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-}
-
-header {
-  text-align: center;
-  padding: 20px;
-  background-color: #333;
-  color: #fff;
-}
-
-main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: calc(100vh - 40px);
-}
-
-#weather-container {
-  width: 80%;
-  max-width: 400px;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, .1) 0px 2px 4px;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
 }
 
 h1 {
-  font-size: 24px;
-}
-
-h2 {
-  font-weight: bold;
-  margin-top: 20px;
+    color: #00698f;
+    text-align: center;
 }
 
 p {
-  font-size: 18px;
+    margin-bottom: 20px;
+}
+
+img {
+    width: 50%;
+    height: auto;
+    margin-left: 25%;
 }

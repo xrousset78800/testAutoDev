@@ -1,29 +1,19 @@
 // weatherAPI.js
-const API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY';
-const API_URL = `http://api.openweathermap.org/data/2.5/weather?q=Aire-sur-la-Lys&units=metric&appid=${API_KEY}`;
+export const API_KEY = 'YOUR_API_KEY_HERE';
 
-function fetchWeatherData() {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', API_URL, true);
-    xhr.onload = function() {
-      if (xhr.status === 200) {
-        resolve(xhr.responseText);
-      } else {
-        reject(new Error(`Error fetching weather data: ${xhr.statusText}`));
-      }
-    };
-    xhr.send();
-  });
-}
+const apiResponse = async (url) => {
+  try {
+    const response = await fetch(url);
+    return response.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-function parseWeatherData(data) {
-  const weatherData = JSON.parse(data);
-  return {
-    temp_c: weatherData.main.temp,
-    condition_icon: weatherData.weather[0].icon,
-    condition_text: weatherData.weather[0].description
-  };
-}
+const getWeatherData = async () => {
+  const url = `https://api.weather.com/${API_KEY}`;
+  const data = await apiResponse(url);
+  // process the weather data here
+};
 
-export { fetchWeatherData, parseWeatherData };
+export { getWeatherData };
