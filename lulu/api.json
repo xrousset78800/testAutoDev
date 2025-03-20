@@ -1,0 +1,6 @@
+{
+  "weatherAPI": {
+    "url": "/api/weather/Aire-sur-la-Lys",
+    "method": "GET"
+  }
+}

@@ -1,5 +1,12 @@
-// config.json
 {
-  "api_key": "YOUR_API_KEY",
-  "weather_location": "London"
+  "siteConfig": {
+    "title": "New Design Site",
+    "description": "This site has been redesigned with a new look and feel.",
+    "author": "Your Name"
+  },
+  "designSettings": {
+    "primaryColor": "#00698f", // Dark blue
+    "secondaryColor": "#333", // Dark gray
+    "backgroundColor": "#f0f0f0" // Light gray
+  }
 }
