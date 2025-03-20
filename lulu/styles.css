@@ -1,19 +1,42 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
 }
 
-h1 {
-    color: #00698f;
+header.bg-dark.text-white.py-5 {
+    background-color: #333;
+    color: #fff;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+h1.display-3 {
     text-align: center;
 }
 
+main.py-4 {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+section.container {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+}
+
 p {
-    margin-bottom: 20px;
+    font-size: 18px;
 }
 
 img {
     width: 50%;
     height: auto;
     margin-left: 25%;
+}
+
+footer.bg-dark.text-white.py-3 {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
 }
