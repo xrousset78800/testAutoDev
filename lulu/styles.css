@@ -11,26 +11,37 @@ header {
     text-align: center;
 }
 
-nav ul {
+#current-weather {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.current-temp {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.weather-condition {
+    font-size: 24px;
+}
+
+.forecast-list ul {
     list-style-type: none;
-    margin: 0;
-    padding: 0;
+    padding-left: 0;
 }
 
-nav li {
-    display: inline-block;
-    margin-right: 10px;
+.forecast-list li {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
 }
 
-nav a {
-    color: #fff;
-    text-decoration: none;
+.forecast-date {
+    font-size: 18px;
 }
 
-footer {
-    background-color: #333;
-    color: #fff;
-    clear: both;
-    padding: 20px;
-    text-align: center;
+.forecast-condition {
+    font-size: 16px;
 }
