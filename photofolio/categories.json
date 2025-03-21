@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "Nature",
+        "photos": [
+            {"id": 1, "title": "Photo Nature 1", "url": "images/nature-1.jpg"},
+            {"id": 2, "title": "Photo Nature 2", "url": "images/nature-2.jpg"}
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Portraits",
+        "photos": [
+            {"id": 3, "title": "Photo Portrait 1", "url": "images/portrait-1.jpg"},
+            {"id": 4, "title": "Photo Portrait 2", "url": "images/portrait-2.jpg"}
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Événements",
+        "photos": [
+            {"id": 5, "title": "Photo Événement 1", "url": "images/event-1.jpg"},
+            {"id": 6, "title": "Photo Événement 2", "url": "images/event-2.jpg"}
+        ]
+    }
+]

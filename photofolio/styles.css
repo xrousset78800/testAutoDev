@@ -1,0 +1,38 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 40px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.diaporama {
+  width: 100%;
+  height: 500px;
+  background-size: cover;
+  background-position: center;
+}
+
+.galerie {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.category-filter {
+  margin-top: 40px;
+}
+
+.category-filter label {
+  cursor: pointer;
+}
+
+.category-filter input[type="radio"] + label {
+  padding-left: 10px;
+}
