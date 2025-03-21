@@ -1,35 +1,28 @@
-// ui.js
-let questionElement;
-let resultElement;
+function updateUI() {
+  const scoreElement = document.getElementById("score");
+  const resultElement = document.getElementById("result");
 
-function displayQuestion(question) {
-  if (questionElement) {
-    questionElement.remove();
+  function displayResult(result) {
+    if (result === "win") {
+      resultElement.textContent = "You win!";
+    } else if (result === "lose") {
+      resultElement.textContent = "Game over, try again!";
+    }
   }
-  let html = `
-    <h2>${question.question}</h2>
-    <ul>
-      ${question.answers.map((answer, index) => `<li><button data-answer-index="${index}">${answer}</button></li>`).join('')}
-    </ul>
-  `;
-  questionElement = $(html);
-  $('body').append(questionElement);
-}
 
-function displayResult(resultText) {
-  if (resultElement) {
-    resultElement.remove();
+  function updateScore(score) {
+    scoreElement.textContent = `Score: ${score}`;
   }
-  let html = `
-    <h2>${resultText}</h2>
-    <button id="play-again">Play Again</button>
-  `;
-  resultElement = $(html);
-  $('body').append(resultElement);
 
-  $('#play-again').on('click', () => {
-    // Rejouer le quiz
+  // Add event listeners for button clicks
+  const buttons = document.querySelectorAll("button");
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      // Call the displayResult and updateScore functions here
+    });
   });
-}
 
-export { displayQuestion, displayResult };
+  // Initialize UI elements
+  scoreElement.textContent = "0";
+  resultElement.textContent = "";
+}
