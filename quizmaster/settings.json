@@ -1,0 +1,10 @@
+{
+  "gameDuration": 300,
+  "correctAnswerEffect": {
+    "type": "animate",
+    "options": ["bounce", "flash"]
+  },
+  "incorrectAnswerEffect": {
+    "type": "shake"
+  }
+}
