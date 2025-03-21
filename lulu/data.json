@@ -1,0 +1,19 @@
+{
+  "weather": [
+    {
+      "date": "2023-03-15",
+      "temperature": 12,
+      "description": "Soleil"
+    },
+    {
+      "date": "2023-03-16",
+      "temperature": 10,
+      "description": "Pluie"
+    },
+    {
+      "date": "2023-03-17",
+      "temperature": 15,
+      "description": "Ensoleillé"
+    }
+  ]
+}
