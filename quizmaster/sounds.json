@@ -1,0 +1,10 @@
+[
+  {
+    "correct": true,
+    "sound": "applause.mp3"
+  },
+  {
+    "incorrect": true,
+    "sound": "sad_trombone.wav"
+  }
+]

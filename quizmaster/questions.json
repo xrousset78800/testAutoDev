@@ -1,0 +1,17 @@
+[
+  {
+    "question": "What is the capital of France?",
+    "answers": ["Paris", "London", "Berlin"],
+    "correctAnswerIndex": 0
+  },
+  {
+    "question": "Which programming language is used for this quiz?",
+    "answers": ["Python", "JavaScript", "Java"],
+    "correctAnswerIndex": 1
+  },
+  {
+    "question": "What is the meaning of life, according to Douglas Adams?",
+    "answers": ["42", "The answer lies within", "It's a mystery"],
+    "correctAnswerIndex": 0
+  }
+]
