@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galerie</title>
+    <link rel="stylesheet" href="styles.css"> <!-- correction de l'appel du fichier CSS -->
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Accueil</a></li>
+                <li><a href="#about">À propos</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Galerie de photos</h1>
+        <div class="category-filter">
+            <label for="nature">Nature</label>
+            <input type="radio" name="categorie" id="nature" value="nature">
+            <label for="portraits">Portraits</label>
+            <input type="radio" name="categorie" id="portraits" value="portraits">
+            <label for="evenements">Événements</label>
+            <input type="radio" name="categorie" id="evenements" value="evenements">
+        </div>
+        <section class="galerie"></section> <!-- contenu de la galerie à ajouter ici -->
+    </main>
+</body>
+</html>
