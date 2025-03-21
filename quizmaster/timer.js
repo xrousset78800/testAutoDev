@@ -1,21 +1,18 @@
+// timer.js
+let startTime = 0;
+let endTime = 0;
+let timeElapsed = 0;
+
 function startTimer() {
-  let seconds = 0;
-  
-  function updateTimer() {
-    seconds++;
-    document.getElementById("timer").textContent = `Time: ${seconds} sec`;
-    
-    if (seconds < 60) {
-      setTimeout(updateTimer, 1000);
-    } else {
-      clearInterval(timerInterval);
-      alert(`Time's up!`);
-    }
-  }
-  
-  let timerInterval = setInterval(updateTimer, 1000);
+    startTime = new Date().getTime();
 }
 
 function stopTimer() {
-  clearInterval(timerInterval);
+    endTime = new Date().getTime();
+    timeElapsed = (endTime - startTime) / 1000; // convert to seconds
+}
+
+function displayTime() {
+    const timerElement = document.getElementById('timer');
+    timerElement.innerText = `Time elapsed: ${timeElapsed.toFixed(2)} seconds`;
 }
